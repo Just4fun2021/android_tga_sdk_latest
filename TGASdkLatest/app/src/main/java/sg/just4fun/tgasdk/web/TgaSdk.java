@@ -35,6 +35,8 @@ import sg.just4fun.tgasdk.tga.global.Global;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
 
 public class TgaSdk {
+
+
     public static Context mContext;
     public static  TGACallback.TgaEventListener listener;
     public static List<UserInFoBean.AdConfigBean> appConfigbeanList=new ArrayList<UserInFoBean.AdConfigBean>();
@@ -238,8 +240,8 @@ public class TgaSdk {
     }
 
     //跳转游戏中心
-    public static void goLink(Context context,String url) {
-        goPage(context, url,true,"");
+    public static void goGameCenter(Context context,String schemeQuery) {
+        goPage(context, "",true,schemeQuery);
     }
 
     public static void shareSuccess(String uuid) {
