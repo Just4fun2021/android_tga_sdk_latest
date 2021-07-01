@@ -197,6 +197,9 @@ public class ApplovinApiBean  implements TgaApiBean{
     public String toAdUnitId(ApplovingAdPlacementType placementType) {
         Gson gson = new Gson();
         Log.e("广告","applovnId="+TgaSdk.applovnIdConfig);
+        if(TgaSdk.applovnIdConfig==null||TgaSdk.applovnIdConfig.equals("")){
+            return null;
+        }
         AppLovinAdPlacementConfig appLovinAdPlacementConfig = gson.fromJson(TgaSdk.applovnIdConfig, AppLovinAdPlacementConfig.class);
         switch (placementType){
                 case Interstitial:

@@ -35,8 +35,6 @@ import sg.just4fun.tgasdk.tga.global.Global;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
 
 public class TgaSdk {
-
-
     public static Context mContext;
     public static  TGACallback.TgaEventListener listener;
     public static List<UserInFoBean.AdConfigBean> appConfigbeanList=new ArrayList<UserInFoBean.AdConfigBean>();

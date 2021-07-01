@@ -26,7 +26,6 @@ public class GooglePayWayUtils {
 
     public static void getAppIdEvents(WebView webView, String uuid) {
         Gson gson = new Gson();
-
         UserInFoBean.AppConfig appConfig = gson.fromJson(TgaSdk.appConfigList, UserInFoBean.AppConfig.class);
         appConfigbeanList = appConfig.getPayMentList();
         if(appConfigbeanList!=null&&!appConfigbeanList.equals("")){
