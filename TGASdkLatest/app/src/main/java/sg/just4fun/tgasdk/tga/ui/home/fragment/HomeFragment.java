@@ -221,9 +221,6 @@ public class HomeFragment extends MvpFragment implements  TGACallback.ShareCallb
     }
 
     private void initWebView(WebView webView) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            webView.setWebContentsDebuggingEnabled(true);
-        }
         WebSettings webSetting = webView.getSettings();
         webSetting.setAllowFileAccess(true);
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
