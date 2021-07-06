@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AbsoluteLayout;
 
 import androidx.annotation.RequiresApi;
@@ -17,7 +18,7 @@ import com.applovin.mediation.ads.MaxRewardedAd;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.google.gson.Gson;
-import com.tencent.smtt.sdk.WebView;
+//import com.tencent.smtt.sdk.WebView;
 
 import java.util.UUID;
 
@@ -130,10 +131,6 @@ public class ApplovinApiBean  implements TgaApiBean{
                     return;
                 }
                 destroyInterstitialAd();
-                String adUnitId = toAdUnitId(tgaAdType);
-                if (adUnitId==null||adUnitId.equals("")){
-                   return;
-                }
                 interstitialAd = new MaxInterstitialAd(toAdUnitId(tgaAdType), context);
                 interstitialAdJob = new ApplovingAdJob(uuid, this, tgaAdType).withCallback(callback);
                 interstitialAd.setListener(interstitialAdJob);
@@ -145,10 +142,6 @@ public class ApplovinApiBean  implements TgaApiBean{
                     return;
                 }
                 destroyRewardedAd();
-                String adUnitId = toAdUnitId(tgaAdType);
-                if (adUnitId==null||adUnitId.equals("")){
-                    return;
-                }
                 rewardedAd = MaxRewardedAd.getInstance(toAdUnitId(tgaAdType), context);
                 rewardedAdJob = new ApplovingAdJob(uuid, this, tgaAdType).withCallback(callback);
                 rewardedAd.setListener(rewardedAdJob);
@@ -166,10 +159,6 @@ public class ApplovinApiBean  implements TgaApiBean{
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage(), e);
                     }
-                }
-                String adUnitId = toAdUnitId(tgaAdType);
-                if (adUnitId==null||adUnitId.equals("")){
-                    return;
                 }
                 adView = new MaxAdView(toAdUnitId(tgaAdType), context);
                 bannerAdJob = new ApplovinBannerAdJob(uuid, this).withCallback(callback);
@@ -207,9 +196,6 @@ public class ApplovinApiBean  implements TgaApiBean{
     }
 
     public String toAdUnitId(ApplovingAdPlacementType placementType) {
-        if (TgaSdk.applovnIdConfig==null||TgaSdk.applovnIdConfig.equals("")){
-            return null;
-        }
         Gson gson = new Gson();
         Log.e("广告","applovnId="+TgaSdk.applovnIdConfig);
         AppLovinAdPlacementConfig appLovinAdPlacementConfig = gson.fromJson(TgaSdk.applovnIdConfig, AppLovinAdPlacementConfig.class);
@@ -219,12 +205,15 @@ public class ApplovinApiBean  implements TgaApiBean{
                     Log.e("广告","applovnId="+appLovinAdPlacementConfig.getInterstitial());
                         return appLovinAdPlacementConfig.getInterstitial() ;
                 case Reward:
+
                         return appLovinAdPlacementConfig.getReward();
 //                    Log.e(WTF,"getReward="+ bannerBean.getReward());
+
                 case Banner:
 //                    Log.e(WTF,"getBanner="+ bannerBean.getBanner());
 
                         return appLovinAdPlacementConfig.getBanner();
+
                 default:
                     return null;
             }
