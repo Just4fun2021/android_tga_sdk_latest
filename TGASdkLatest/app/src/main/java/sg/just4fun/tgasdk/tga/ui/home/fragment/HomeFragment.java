@@ -246,9 +246,6 @@ public class HomeFragment extends MvpFragment implements  TGACallback.ShareCallb
         webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
         // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
         webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
-        if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT) {
-            add_view.setWebContentsDebuggingEnabled(true);
-        }
     }
 
 
