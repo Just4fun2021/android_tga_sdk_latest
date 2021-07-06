@@ -4,7 +4,7 @@ buildscript {
         google()
         mavenCentral()
         jcenter()
-        maven { url = uri("https://applovin.bintray.com/Quality-Service") }
+        maven { url'https://applovin.bintray.com/Quality-Service' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
@@ -23,7 +23,7 @@ allprojects {
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://jitpack.io' }
         flatDir {
             dirs 'libs'
