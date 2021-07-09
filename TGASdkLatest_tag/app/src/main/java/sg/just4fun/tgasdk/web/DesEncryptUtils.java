@@ -1,7 +1,10 @@
 package sg.just4fun.tgasdk.web;
 
+import android.util.Log;
+
 import java.io.UnsupportedEncodingException;
 import java.security.KeyFactory;
+import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
@@ -20,14 +23,17 @@ public class DesEncryptUtils {
 
     //RSA公钥加密
     public static String encrypt(String str, String publicKey) throws Exception{
-        //base64编码的公钥
-        byte[] decoded = base64DecodeToBytes(publicKey);
-            RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
+            Log.e("googlePayWay","publicKey="+publicKey);
+            //base64编码的公钥
+            byte[] decoded = base64DecodeToBytes(publicKey);
+        PublicKey pubKey =  KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
+            Log.e("googlePayWay","RSAPublicKey="+pubKey);
             //RSA加密
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.ENCRYPT_MODE, pubKey);
             outStrList.clear();
             if (str.length()>100){
+                Log.e("googlePayWay","大于100="+str);
                 if (str.length()%100>0){
                     num=str.length()/100+1;
                 }else {
@@ -60,8 +66,10 @@ public class DesEncryptUtils {
                 for (int a=0;a<outStrList.size();a++){
                     outStr+=outStrList.get(a)+",";
                 }
+                Log.e("googlePayWay","outStr="+outStr);
                 return outStr;
             }else {
+                Log.e("googlePayWay","小于100="+outStr);
                 String outStr = getString(cipher, str);
                 return outStr;
             }

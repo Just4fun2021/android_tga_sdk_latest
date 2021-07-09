@@ -333,7 +333,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void hideApplovingBannerAd(String uuid, String options) {
-        apploving.hideBannerAd(uuid);
+        apploving.hideBannerAd(uuid,"banner");
 
     }
 
@@ -344,7 +344,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void hideVungleBannerAd(String uuid, String options) {
-        vungle.hideBannerAd(uuid);
+        vungle.hideBannerAd(uuid,"banner");
 
     }
     @JavascriptInterface

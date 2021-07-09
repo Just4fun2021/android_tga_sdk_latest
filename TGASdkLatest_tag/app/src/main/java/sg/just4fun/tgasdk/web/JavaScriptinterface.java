@@ -360,9 +360,10 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void hideApplovingBannerAd(String uuid, String options) {
+        Log.e("hideApplovingBannerAd","广告"+options);
         if(!metaDataStringApplication1.equals("")){
             if (TgaSdk.applovnIdConfig!=null){
-                apploving.hideBannerAd(uuid);
+                apploving.hideBannerAd(uuid,"banner");
             }
         }
 
@@ -376,7 +377,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void hideVungleBannerAd(String uuid, String options) {
-        vungle.hideBannerAd(uuid);
+        vungle.hideBannerAd(uuid,"");
 
     }
     @JavascriptInterface
@@ -413,12 +414,15 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
              googlePayWayInFo = gson.fromJson(options, GooglePayWayInFo.class);
             Log.e("googlePayWay","商品id="+googlePayWayInFo.getId());
              orderId = googlePayWayInFo.getOrder();
-             Log.e("googlePayWay","TgaSdk.infoList="+TgaSdk.infoList.toString());
+             Log.e("googlePayWay","orderId="+orderId);
             if (googlePayWayInFo.getPayType().equals("googlePay")){
                 if(TgaSdk.infoList!=null&&TgaSdk.infoList.size()>0){
                     for (int a=0;a<TgaSdk.infoList.size();a++){
                         GooglePayInfoBean.GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
+
                         if (googlePayInfo.getWareId().equals(googlePayWayInFo.getId())){
+                            Log.e("googlePayWay","googlePayInfo.getWareId()="+googlePayInfo.getWareId());
+                            Log.e("googlePayWay","商品id"+googlePayWayInFo.getId());
                             googlePayWaypay(googlePayInfo.getThirdWareId());
                         }
                     }
@@ -610,6 +614,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     Log.e("googlePayWay","得到值price1="+list.get(0).toString());
 
                 } catch (Exception e) {
+                    Log.e("googlePayWay","访问服务端="+e.getMessage());
                     e.printStackTrace();
                 }
                 googleBillingUtil.purchaseInApp(context,list.get(0));
@@ -623,6 +628,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
                 } catch (Exception e) {
+                    Log.e("googlePayWay","访问服务端="+e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -641,6 +647,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
 
@@ -659,6 +666,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -683,6 +691,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
 
@@ -700,6 +709,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
 
@@ -715,14 +725,17 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
             isscu=1;
             //内购或者订阅成功,可以通过purchase.getSku()获取suk进而来判断是哪个商品
             GooglePayWayUtils.googlePayWayEvents(webview,payUuid,"1");
+            Log.e("来啊","老弟");
              ggOrder = list.get(0).getOrderId();
             EncryptStrBean encryptStrBean = new EncryptStrBean(JavaScriptinterface.this.orderId,price,list.get(0).getPurchaseTime(),googlePayWayInFo.getId());
             try {
                 String encryptStr1 = encryptStrBean.toJson().toString();
+                Log.e("googlePayWay","try=encryptStr1"+encryptStr1+TgaSdk.appPaymentKey);
                 String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
+                Log.e("googlePayWay","try=encryptStr"+encryptStr);
                 googlePayResult(TgaSdk.appId,context,list.get(0).getOrderId(),encryptStr,"inapp",TgaSdk.appId,1);
             } catch (Exception e) {
-                Log.e("googlePayWay","访问问服务端="+e.getMessage());
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -739,6 +752,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -754,6 +768,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -771,6 +786,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
             jsonObject.put("callbackKey", callbackKey);
             jsonObject.put("state", state);
             data = jsonObject.toString();
+            Log.e("googlePayWay","进来了data="+data);
         } catch (JSONException e) {
             e.printStackTrace();
         }

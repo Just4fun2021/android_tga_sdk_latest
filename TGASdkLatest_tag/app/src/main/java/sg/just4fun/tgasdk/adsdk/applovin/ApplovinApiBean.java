@@ -346,8 +346,13 @@ public class ApplovinApiBean  implements TgaApiBean{
             ensureAdLoaded(uuid, adTypeName, ready -> {
                 if (ready) {
                     onEvent(uuid, "onAdLoad");
-                    adView.setVisibility( View.VISIBLE );
-                    adView.startAutoRefresh();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            adView.setVisibility( View.VISIBLE );
+                            adView.startAutoRefresh();
+                        }
+                    });
+
                 } else {
                     onEvent(uuid, "onError", toErrorExt("showAd", "SDK MODEL-" + MODEL_NAME + " is not preloaded"));
                 }
@@ -359,14 +364,19 @@ public class ApplovinApiBean  implements TgaApiBean{
     }
 
     @Override
-    public void hideBannerAd(String uuid) {
+    public void hideBannerAd(String uuid,String adTypeName) {
         ensureAdLoaded(uuid, TgaAdType.Banner.getName(), ready -> {
             if (ready) {
-                onEvent(uuid, "onAdLoad");
+                onEvent(uuid, "banner");
         Log.d("eZx4Pox", "tgaAdType == 将控件隐藏" );
         //TODO: 将控件隐藏
-                adView.setVisibility( View.GONE );
-                adView.stopAutoRefresh();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        adView.setVisibility( View.GONE );
+                        adView.stopAutoRefresh();
+                    }
+                });
+
             } else {
                 onEvent(uuid, "onError", toErrorExt("showAd", "SDK MODEL-" + MODEL_NAME + " is not preloaded"));
             }

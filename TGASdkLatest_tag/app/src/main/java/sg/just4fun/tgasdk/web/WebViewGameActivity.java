@@ -179,7 +179,10 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                                                            public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, Message resultMsg) {
 
                                                                Log.e("webviewOpen","onCreateWindow=");
-                                                               newWebView = new LollipopFixedWebView(WebViewGameActivity.this);//新创建一个webview
+                                                              if(newWebView==null){
+
+                                                                  newWebView = new LollipopFixedWebView(WebViewGameActivity.this);//新创建一个webview
+                                                              }
 
                                                                initWebView(newWebView);//初始化webview
 

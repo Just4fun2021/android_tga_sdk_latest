@@ -33,7 +33,7 @@ public class GooglePayWayUtils {
             for (int a=0;a<appConfigbeanList.size();a++){
                 if (appConfigbeanList.get(a).getChannelName().equals("googlePay")) {
                     enabled = appConfigbeanList.get(a).getEnabled();
-                    Log.e("初始化","是否充值="+enabled);
+                    Log.e("googlePayWay","是否充值="+enabled);
                 }
             }
 
@@ -118,7 +118,7 @@ public class GooglePayWayUtils {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void run() {
-            Log.e("执行了回调", " JSON= "+scriptCode1 +" run on " +  webView1.getUrl());
+            Log.e("googlePayWay执行了回调", " JSON= "+scriptCode1 +" run on " +  webView1.getUrl());
             webView1.evaluateJavascript(scriptCode1, null);
         }
     }

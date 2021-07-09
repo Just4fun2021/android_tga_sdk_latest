@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 public class TgaAdSdkUtils {
 
     public static WebView tgaWebview;
@@ -186,13 +187,14 @@ public class TgaAdSdkUtils {
         if(eventInfo == null) {
             return;
         }
+
 //        if("onAdLoad".equals(eventInfo.getMethod()) || !doCache) {
-        if("onAdLoad".equals(eventInfo.getMethod()) || !doCache) {
+        if("banner".equals(eventInfo.getMethod()) || !doCache) {
 //            String scriptCode = data == null ? "TgaSdk.onEvent("+eventInfo.toJson().toString()+")" : "TgaSdk.onEvent("+eventInfo.toJson().toString()+", "+ jsonOf(data) +")";
             String scriptCode = toTgaSdkOnEventJsCode(eventInfo, data);
             Log.d(logTag, "RUNEVENT " + scriptCode);
             try{
-                webView.evaluateJavascript(scriptCode, null);
+                webView.post( new ScriptCodeRunnable(scriptCode, webView));
                 return;
             } catch(Exception e) {
 
@@ -221,6 +223,22 @@ public class TgaAdSdkUtils {
 //    public static String toJavaScriptCode(TgaEventBaseInfo data, String extjson) throws Exception {
 //        return  extjson == null ? "TgaSdk.onEvent("+data.toJson().toString()+")" : "TgaSdk.onEvent("+data.toJson().toString()+", "+ extjson +")";
 //    }
+public static class ScriptCodeRunnable implements Runnable {
+    private final String scriptCode;
+    private final WebView webView;
+    public ScriptCodeRunnable(String scriptCode, WebView webView) {
+        this.scriptCode = scriptCode;
+        this.webView = webView;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void run() {
+        Log.d("执行了回调", "JSON="+scriptCode +" run on " +
+                webView.getUrl());
+        webView.evaluateJavascript(scriptCode, null);
+    }
+}
 
     public static void runEventForUnsupportedType(WebView webView, String model, String uuid, String targetTypeName, String logTag) throws Exception {
         JSONObject errorInfo = new JSONObject();
@@ -286,23 +304,6 @@ public class TgaAdSdkUtils {
         }
     }
 
-    public static class ScriptCodeRunnable implements Runnable {
-        private final String scriptCode;
-        private final WebView webView;
-
-        public ScriptCodeRunnable(String scriptCode, WebView webView) {
-            this.scriptCode = scriptCode;
-            this.webView = webView;
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        @Override
-        public void run() {
-            Log.d("JSCODE", scriptCode +"  run on " +
-                    webView.getUrl());
-            webView.evaluateJavascript(scriptCode, null);
-        }
-    }
 
 
 }
