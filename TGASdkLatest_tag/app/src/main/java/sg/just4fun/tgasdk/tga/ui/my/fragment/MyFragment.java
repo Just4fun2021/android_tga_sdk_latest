@@ -106,7 +106,7 @@ if ( TgaSdk.listener!=null){
         Gson gson = new Gson();
         TgaSdkUserInFo tgaSdkUserInFo = gson.fromJson(userInfo, TgaSdkUserInFo.class);
         if (userInfo!=null&&tgaSdkUserInFo.getUserId()!=null){
-            TGA_URL = TgaSdk.gameCentreUrl+ "?txnid="+tgaSdkUserInFo.getUserId()+"&nickname="+tgaSdkUserInFo.getNickname()+"&head="+tgaSdkUserInFo.getAvatar()+"&appId="+ TgaSdk.appId+"&hidebar=1";//无底部
+            TGA_URL = TgaSdk.gameCentreUrl+ "?txnid="+tgaSdkUserInFo.getUserId()+"&appId="+ TgaSdk.appId+"&hidebar=1"+"&nickname="+tgaSdkUserInFo.getNickname()+"&head="+tgaSdkUserInFo.getAvatar();//无底部
             if(lang!=null) {
                 TGA_URL =TGA_URL+ "&lang=" + urlEncode(lang)+"#/me";
             }else {

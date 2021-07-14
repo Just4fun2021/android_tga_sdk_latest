@@ -189,7 +189,7 @@ public class TgaAdSdkUtils {
         }
 
 //        if("onAdLoad".equals(eventInfo.getMethod()) || !doCache) {
-        if("onAdLoad".equals(eventInfo.getMethod()) || !doCache) {
+        if("banner".equals(eventInfo.getMethod()) || !doCache) {
 //            String scriptCode = data == null ? "TgaSdk.onEvent("+eventInfo.toJson().toString()+")" : "TgaSdk.onEvent("+eventInfo.toJson().toString()+", "+ jsonOf(data) +")";
             String scriptCode = toTgaSdkOnEventJsCode(eventInfo, data);
             Log.d(logTag, "RUNEVENT " + scriptCode);

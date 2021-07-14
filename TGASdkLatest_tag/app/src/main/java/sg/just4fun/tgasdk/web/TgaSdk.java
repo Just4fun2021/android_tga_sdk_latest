@@ -177,10 +177,10 @@ public class TgaSdk {
                                 TgaSdkUserInFo userInFo = gson.fromJson(userInfo, TgaSdkUserInFo.class);
                                 if (TgaSdk.gameCentreUrl!=null&&!TgaSdk.gameCentreUrl.equals("")){
                                     if (schemeQuery!=null&&!schemeQuery.equals("")){
-                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&nickname="+urlEncode(userInFo.getNickname())+"&"+schemeQuery+"&head="+urlEncode(userInFo.getAvatar())+"&appId="+ TgaSdk.appId;//无底部
+                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&head="+urlEncode(userInFo.getAvatar());//无底部
                                     }else {
 
-                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&nickname="+urlEncode(userInFo.getNickname())+"&head="+urlEncode(userInFo.getAvatar())+"&appId="+ TgaSdk.appId;//无底部
+                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&head="+urlEncode(userInFo.getAvatar());//无底部
                                     }
                                     Intent intent = new Intent(context, WebViewGameActivity.class);
                                     intent.putExtra("url",url);

@@ -139,7 +139,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
             e.printStackTrace();
         }
 
-        Log.e("广告","Interstitial="+ appLovinAdPlacementConfig.getTitleAd());
+        Log.e("广告","Interstitial="+ appLovinAdPlacementConfig.getInterstitial());
 
         String metaDataStringApplication = Conctart.getMetaDataStringApplication(context,"com.facebook.sdk.ApplicationId", "");
         if (!metaDataStringApplication.equals("")){
