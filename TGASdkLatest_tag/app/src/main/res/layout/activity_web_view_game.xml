@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".web.WebViewGameActivity">
+<!--<FrameLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent">-->
+
+<!--<RelativeLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent">-->
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -45,5 +53,22 @@
 
         </RelativeLayout>
     </FrameLayout>
+<!--</RelativeLayout>-->
 
+<!--  <RelativeLayout-->
+<!--      android:background="#ffffff"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="match_parent">-->
+
+<!--      <sg.just4fun.tgasdk.web.LollipopFixedWebView-->
+<!--          android:layerType="hardware"-->
+<!--          android:id="@+id/banner_web"-->
+<!--          android:layout_width="match_parent"-->
+<!--          android:layout_height="match_parent"/>-->
+
+
+
+<!--  </RelativeLayout>-->
+
+<!--</FrameLayout>-->
 </RelativeLayout>

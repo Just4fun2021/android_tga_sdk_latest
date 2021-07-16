@@ -50,6 +50,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
     private int change;
     private FacebookTpBean facebook;
     private int gopag;
+    private static LollipopFixedWebView banner_web;
 
     public static String urlEncode(String text) {
         try{
@@ -68,11 +69,10 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         img_loading = findViewById(R.id.img_loading);
         rl_loading = findViewById(R.id.rl_loading);
         add_view = findViewById(R.id.add_view1);
-
+//        banner_web = findViewById(R.id.banner_web);
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
-         gopag = intent.getIntExtra("gopag", -1);
-
+        gopag = intent.getIntExtra("gopag", -1);
         if (gopag==1){
             upWebview(gopag,"",add_view);
         }else {

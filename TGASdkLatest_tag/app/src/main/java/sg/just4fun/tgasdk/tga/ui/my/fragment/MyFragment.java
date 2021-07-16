@@ -155,7 +155,7 @@ if ( TgaSdk.listener!=null){
                     intent.putExtra(Intent.EXTRA_TEXT, shareUri.getQueryParameter("title") + " " + shareUri.getQueryParameter("url"));
                     //UserAgreementActivity.this.startActivity(Intent.createChooser(intent, ""));
                     startActivity(intent);*/
-//                    shareFaceBook(shareUri.getQueryParameter("url"));
+//                  shareFaceBook(shareUri.getQueryParameter("url"));
                     return true;
                 } else if (!TextUtils.isEmpty(uri.toString())) {
                     Log.d("TGA_URL", uri.toString());
@@ -171,7 +171,7 @@ if ( TgaSdk.listener!=null){
                 rl_loading.setVisibility(View.GONE);
                 Log.d("TGA_URL", "url fininshed : " + url + ", webview.orgurl=" + webView.getOriginalUrl() +", webview.url = " + webView.getUrl());
             }
-/*@Override
+            /*@Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 alertDialog.dismiss();

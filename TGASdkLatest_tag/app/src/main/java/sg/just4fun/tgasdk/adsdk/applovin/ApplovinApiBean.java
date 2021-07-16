@@ -152,8 +152,7 @@ public class ApplovinApiBean  implements TgaApiBean{
                 interstitialAdJob = new ApplovingAdJob(uuid, this, tgaAdType).withCallback(callback);
                 interstitialAd.setListener(interstitialAdJob);
                 interstitialAd.loadAd();
-            }
-            else    if(tgaAdType == ApplovingAdPlacementType.Interstitial2) {
+            } else if(tgaAdType == ApplovingAdPlacementType.Interstitial2) {
                 if(isInterstitialAdLoaded2()) {
                     interstitialAdJob2.setUuid(uuid);
                     callback.accept(true);
