@@ -206,10 +206,13 @@ public class GoogleBillingUtil {
           //消耗商品
           for(Purchase purchase:list)
           {
+//            ArrayList<String> sku = purchase.getSkus();
             String sku = purchase.getSku();
             if(sku!=null)
             {
+//              String skuType = getSkuType(sku.get(0));
               String skuType = getSkuType(sku);
+
               if(skuType!=null)
               {
                 if(skuType.equals(BillingClient.SkuType.INAPP))

@@ -10,7 +10,9 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!--   谷歌支付 -->
-    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission
+        android:name="com.android.vending.BILLING"
+        android:required="false"/>
     <uses-permission android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR" />
 
     <application

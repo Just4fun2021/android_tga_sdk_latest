@@ -79,47 +79,7 @@ public class TgaSdk {
 //       获取用户配置表
         getUserInfo(appKey);
     }
-     public static void initSDKWeb(Context context){
-         Handler  handler=new Handler();
-         Runnable runnable = new Runnable() {
-             @Override
-             public void run() {
-                 initTBS(context);
-             }
-         };
-         handler.postDelayed(runnable,0);
-     }
 
-
-    public static void initTBS(Context context) {
-//
-////        add_view.getCrashExtraMessage(this);
-//        //视频为了避免闪屏和透明问题
-////        mContext.getWindow().setFormat(PixelFormat.TRANSLUCENT);
-//        //避免输入法界面弹出后遮挡输入光标的问题
-////        mContext.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-//        //非wifi情况下，主动下载x5内核
-//        QbSdk.setDownloadWithoutWifi(true);
-//        //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
-//        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
-//            @Override
-//            public void onViewInitFinished(boolean arg0) {
-//                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
-//                Log.i(TGA,"腾讯 X 5 初始化:" + arg0);
-//                Log.i(TGA,arg0 == true ? "腾讯 X5 初始化成功！" : "腾讯 X5 初始化失败！");
-//                if(arg0==false){
-//                    initTBS(context);
-//                }
-//            }
-//            @Override
-//            public void onCoreInitFinished() {
-//
-//            }
-//        };
-//        //x5内核初始化接口
-//        QbSdk.initX5Environment(context.getApplicationContext(), cb);
-
-    }
 
     private static void getGooglePayInfo(String appId) {
         JSONObject jsonObject = new JSONObject();
@@ -229,6 +189,8 @@ public class TgaSdk {
         return "";
     }
 
+
+
     //跳转游戏中心
     public static void goPage(Context context,String url,String gameid) {
        goPage(context, url, true,gameid);
@@ -290,6 +252,7 @@ public class TgaSdk {
                 try{
                     if (response.body().getStateCode() == 1) {
                         if (listener!=null){
+                            listener.getTgaSdkUserInfo(response.body().getResultInfo());
                             String pkName = mContext.getPackageName();
                             sdkPkName = response.body().getResultInfo().getPackageName();
                             if (sdkPkName!=null&&!sdkPkName.equals("")){
@@ -341,6 +304,9 @@ public class TgaSdk {
                                 initCallback.initError(mContext.getResources().getString(R.string.packagename));
                             }
 
+                        }else {
+                            isSuccess=0;
+                            initCallback.initError("errorCode=" + response.body().getStateCode());
                         }
 
                     } else {

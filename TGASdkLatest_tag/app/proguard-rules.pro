@@ -94,6 +94,7 @@
 #-keep class net.sourceforge.**{*;}
 #
 #-keep class pinyindb.**{*;}
+-keep class com.android.vending.billing.**
 
 
 

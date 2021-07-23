@@ -3,6 +3,7 @@ package sg.just4fun.tgasdk.tga.ui.my.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -96,6 +97,8 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
     private static String ggOrder;
     private int isscu=0;
     private int cishu=5;
+    private String metaDataStringApplication1;
+
     //    public static WebView webView;
     public MyJavaScripface(Activity context, String tgaUrl){
         this.context= context;
@@ -122,25 +125,10 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
 //        } catch(Exception e){
 //
 //        }
-//
+
         if (TgaSdk.appConfigbeanList==null){
             TgaSdk.getUserInfo(TgaSdk.appPaymentKey);
         }
-        AppLovinAdPlacementConfig appLovinAdPlacementConfig = new AppLovinAdPlacementConfig();
-        try {
-            if(TgaSdk.applovnIdConfig!=null){
-                JSONObject jsonObject = new JSONObject(TgaSdk.applovnIdConfig);
-                appLovinAdPlacementConfig.fromJson(jsonObject);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Log.e("广告","Interstitial="+ appLovinAdPlacementConfig.getTitleAd());
-
         String metaDataStringApplication = Conctart.getMetaDataStringApplication(context,"com.facebook.sdk.ApplicationId", "");
         if (!metaDataStringApplication.equals("")){
             try{
@@ -151,14 +139,29 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
             }
         }
 
-        String metaDataStringApplication1 = Conctart.getMetaDataStringApplication(context,"applovin.sdk.key", "");
+        metaDataStringApplication1 = Conctart.getMetaDataStringApplication(context,"applovin.sdk.key", "");
         Log.d("tgasdk-js", "Apploving Init Begin");
         Log.d(TGA, "apploving="+metaDataStringApplication1);
 
         if (!metaDataStringApplication1.equals("")){
+            AppLovinAdPlacementConfig appLovinAdPlacementConfig = new AppLovinAdPlacementConfig();
+            try {
+                if(TgaSdk.applovnIdConfig!=null){
+                    JSONObject jsonObject = new JSONObject(TgaSdk.applovnIdConfig);
+                    appLovinAdPlacementConfig.fromJson(jsonObject);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             try{
-                apploving = new ApplovinApiBean(context, webview, tgaUrl);
-                apploving.initSdk();
+                if(TgaSdk.applovnIdConfig!=null){
+                    apploving = new ApplovinApiBean(context, webview, tgaUrl);
+                    apploving.initSdk();
+                }
             } catch(Exception e) {
                 Log.e("tgasdk-js", "Apploving Init Error", e);
 
@@ -259,6 +262,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void logout(String uuid,String options) {
+
         Log.d("是不是","logout");
         if(TgaSdk.listener != null) {
             TgaSdk.listener.quitLogin(context);
@@ -319,7 +323,25 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
     public void showApplovinAd(String uuid, String adType) {
         Log.d(apploving.getTag(), "showApplovingAd(" + uuid + "," + adType + ")");
         Log.d("eZx4Pox", "showApplovingAd(" + uuid + "," + adType + ")");
-        apploving.showAd(uuid, adType);
+        if(!metaDataStringApplication1.equals("")){
+            if (TgaSdk.applovnIdConfig!=null){
+                apploving.showAd(uuid, adType);
+            }
+        }
+
+    }
+    //    切换横屏
+    @JavascriptInterface
+    public void HorizontalScreen(String uuid, String options) {
+        Log.e("HorizontalScreen","横屏options="+options);
+        context.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    //    切换竖屏
+    @JavascriptInterface
+    public void VerticalScreen(String uuid, String options) {
+        Log.e("VerticalScreen","竖屏options="+options);
+        context.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //切换竖屏
     }
 
 
@@ -328,12 +350,23 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
         Log.d(apploving.getTag(), "showApplovinBannerAd(" + uuid + "," + params + ")");
 //        Log.d("eZx4Pox", "showApplovinBannerAd(" + uuid + "," + params + ")");
 //        apploving.showBannerAd(uuid, "banner", params);
-        apploving.showAd(uuid, "banner");
+        if(!metaDataStringApplication1.equals("")){
+            if (TgaSdk.applovnIdConfig!=null){
+                apploving.showAd(uuid, "banner");
+            }
+        }
+
     }
 
     @JavascriptInterface
     public void hideApplovingBannerAd(String uuid, String options) {
-        apploving.hideBannerAd(uuid,"banner");
+        Log.e("hideApplovingBannerAd","广告"+options);
+        if(!metaDataStringApplication1.equals("")){
+            if (TgaSdk.applovnIdConfig!=null){
+                apploving.hideBannerAd(uuid,"banner");
+            }
+        }
+
 
     }
 
@@ -344,7 +377,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void hideVungleBannerAd(String uuid, String options) {
-        vungle.hideBannerAd(uuid,"banner");
+        vungle.hideBannerAd(uuid,"");
 
     }
     @JavascriptInterface
@@ -381,12 +414,15 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
             googlePayWayInFo = gson.fromJson(options, GooglePayWayInFo.class);
             Log.e("googlePayWay","商品id="+googlePayWayInFo.getId());
             orderId = googlePayWayInFo.getOrder();
-            Log.e("googlePayWay","TgaSdk.infoList="+TgaSdk.infoList.toString());
+            Log.e("googlePayWay","orderId="+orderId);
             if (googlePayWayInFo.getPayType().equals("googlePay")){
                 if(TgaSdk.infoList!=null&&TgaSdk.infoList.size()>0){
                     for (int a=0;a<TgaSdk.infoList.size();a++){
                         GooglePayInfoBean.GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
+
                         if (googlePayInfo.getWareId().equals(googlePayWayInFo.getId())){
+                            Log.e("googlePayWay","googlePayInfo.getWareId()="+googlePayInfo.getWareId());
+                            Log.e("googlePayWay","商品id"+googlePayWayInFo.getId());
                             googlePayWaypay(googlePayInfo.getThirdWareId());
                         }
                     }
@@ -420,7 +456,6 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
 
                 TgaSdkUserInFo userInFo = new TgaSdkUserInFo();
                 String userInfo = SpUtils.getString(context, "userInfo", "");
-
                 Gson gson1 = new Gson();
                 if (!userInfo.equals("")){
                     TgaSdkUserInFo shareInFo1 = gson1.fromJson(userInfo, TgaSdkUserInFo.class);
@@ -439,15 +474,19 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
     }
 
 
+
     @JavascriptInterface
     public void thirdPartyShare(String uuid,  String options) {
-        Log.e("facebook分享","facebook分享"+options);
+        Log.e("第三方分享","facebook分享"+options);
         try {
             Objects.requireNonNull(TgaSdk.listener);
             Gson gson = new Gson();
             AppShareInFo shareInFo = gson.fromJson(options, AppShareInFo.class);
+
 //            TgaSdk.listener.onInAppShare(context,uuid,shareInFo.getIcon(),shareInFo.getUrl(),shareInFo.getTitle());
-            facebook.doShare(context,webview,shareInFo,uuid);
+            if(shareInFo.getCode().equals("facebook")){
+                facebook.doShare(context,webview,shareInFo,uuid);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             TgaSdk.shared(uuid, false); //TODO: 以后需要改成onEvent一个Error或者在shared中添加失败原因
@@ -460,8 +499,6 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
         Log.e("获取广告配置表","getBannerConfig");
         AdConfigUtlis.getBannerConfigEvents(webview,uuid);
     }
-
-
 
     //    @JavascriptInterface
 //    public void showFacebookAd(String uuid, String adType) {
@@ -497,7 +534,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                 OutputStreamWriter osw = null;
                 BufferedReader reader = null;
                 try {
-                    String productId = purchase.getSku();
+                    String productId = purchase.getOrderId();
                     String callback = waitingPayments.get(productId);
                     String orderId = waitingPayments.get(productId);
                     String token = purchase.getPurchaseToken();
@@ -527,7 +564,6 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
     public void test() {
         this.apploving.showAd(UUID.randomUUID().toString().replace("-",""), "fullscreen");
     }
-
 
     @JavascriptInterface
     public void tryFlushEvents(String uuid, String options) {
@@ -578,6 +614,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                     Log.e("googlePayWay","得到值price1="+list.get(0).toString());
 
                 } catch (Exception e) {
+                    Log.e("googlePayWay","访问服务端="+e.getMessage());
                     e.printStackTrace();
                 }
                 googleBillingUtil.purchaseInApp(context,list.get(0));
@@ -591,6 +628,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                     googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
                 } catch (Exception e) {
+                    Log.e("googlePayWay","访问服务端="+e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -609,6 +647,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
 
@@ -627,6 +666,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -651,6 +691,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
 
@@ -668,6 +709,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
 
@@ -677,18 +719,23 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
     //购买商品回调接口
     private class MyOnPurchaseFinishedListener implements GoogleBillingUtil.OnPurchaseFinishedListener
     {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onPurchaseSuccess(List<Purchase> list) {
             isscu=1;
             //内购或者订阅成功,可以通过purchase.getSku()获取suk进而来判断是哪个商品
             GooglePayWayUtils.googlePayWayEvents(webview,payUuid,"1");
+            Log.e("来啊","老弟");
             ggOrder = list.get(0).getOrderId();
-            EncryptStrBean encryptStrBean = new EncryptStrBean(MyJavaScripface.this.orderId,price,list.get(0).getPurchaseTime(),googlePayWayInFo.getId());
+            EncryptStrBean encryptStrBean = new EncryptStrBean(orderId,price,list.get(0).getPurchaseTime(),googlePayWayInFo.getId());
             try {
                 String encryptStr1 = encryptStrBean.toJson().toString();
+                Log.e("googlePayWay","try=encryptStr1"+encryptStr1+TgaSdk.appPaymentKey);
                 String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
+                Log.e("googlePayWay","try=encryptStr"+encryptStr);
                 googlePayResult(TgaSdk.appId,context,list.get(0).getOrderId(),encryptStr,"inapp",TgaSdk.appId,1);
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -702,10 +749,10 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
             try {
                 String encryptStr1 = encryptStrBean.toJson().toString();
                 String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
-
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
 
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -721,6 +768,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                 String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
             } catch (Exception e) {
+                Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -738,6 +786,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
             jsonObject.put("callbackKey", callbackKey);
             jsonObject.put("state", state);
             data = jsonObject.toString();
+            Log.e("googlePayWay","进来了data="+data);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -749,9 +798,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                 .execute(new JsonCallback<HttpBaseResult<ResultBean>>() {
                     @Override
                     public void onSuccess(Response<HttpBaseResult<ResultBean>> response) {
-
                         Log.e("googlePayWay","通知成功"+response.body().getResultInfo());
-
                     }
                     @Override
                     public void onError(Response<HttpBaseResult<ResultBean>> response) {
@@ -800,6 +847,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
         return str;
     }
     private void getGooglePayInfo(Context context, String appId) {
+
         JSONObject jsonObject = new JSONObject();
         String data = "{}";
         try {
@@ -819,6 +867,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                     @Override
                     public void onSuccess(Response<HttpBaseResult<GooglePayInfoBean>> response) {
                         if (response.body().getStateCode() == 1) {
+
                             infoList = response.body().getResultInfo().getData();
                             if (infoList.size()==0){
                                 Log.e("googlePayWay","googlepay配置表商品为0");

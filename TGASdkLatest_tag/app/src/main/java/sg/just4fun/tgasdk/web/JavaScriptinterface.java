@@ -9,6 +9,7 @@ import android.os.Build;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -122,13 +123,10 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
 //        } catch(Exception e){
 //
 //        }
-//
+
         if (TgaSdk.appConfigbeanList==null){
             TgaSdk.getUserInfo(TgaSdk.appPaymentKey);
         }
-
-
-
         String metaDataStringApplication = Conctart.getMetaDataStringApplication(context,"com.facebook.sdk.ApplicationId", "");
          if (!metaDataStringApplication.equals("")){
              try{
@@ -534,7 +532,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 OutputStreamWriter osw = null;
                 BufferedReader reader = null;
                 try {
-                    String productId = purchase.getSku();
+                    String productId = purchase.getOrderId();
                     String callback = waitingPayments.get(productId);
                     String orderId = waitingPayments.get(productId);
                     String token = purchase.getPurchaseToken();
@@ -689,7 +687,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 String encryptStr1 = encryptStrBean.toJson().toString();
                 String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
-
             } catch (Exception e) {
                 Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
