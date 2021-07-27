@@ -599,7 +599,10 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 String price1 = list.get(0).getPrice();
                 String number = getNumber(price1);
 //            int length = split[1].length();
-                String xsStr = number.substring(number.indexOf("."),number.length());
+
+                Log.e("googlePayWay","number="+number+" number.length()"+number.length());
+
+                String xsStr = number.substring(number.indexOf("."));
                 int i = xsStr.length() - 1;
                 String replace = xsStr.replace(".", "");
                 long pow = (long) Math.pow(10, i);
@@ -747,7 +750,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 String encryptStr1 = encryptStrBean.toJson().toString();
                 String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
-
             } catch (Exception e) {
                 Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();

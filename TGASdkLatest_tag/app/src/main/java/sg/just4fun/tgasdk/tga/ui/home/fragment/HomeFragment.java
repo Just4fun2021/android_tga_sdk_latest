@@ -123,11 +123,9 @@ public class HomeFragment extends MvpFragment implements  TGACallback.ShareCallb
 
         String userInfo = TgaSdk.listener.getUserInfo();
         Log.e("头像","头像="+userInfo);
-
         SpUtils.putString(getActivity(),"userInfo",userInfo);
         Gson gson = new Gson();
         TgaSdkUserInFo tgaSdkUserInFo = gson.fromJson(userInfo, TgaSdkUserInFo.class);
-
         Log.e("头像","头像="+tgaSdkUserInFo.getAvatar()+"  userid="+tgaSdkUserInFo.getUserId()+" 昵称="+tgaSdkUserInFo.getNickname()+" 游戏="+tgaSdkUserInFo.getGameId());
         if (tgaSdkUserInFo.getUserId()==null||tgaSdkUserInFo.getUserId().equals("")){
             TgaSdk.listener.quitLogin(getActivity());
@@ -154,7 +152,6 @@ public class HomeFragment extends MvpFragment implements  TGACallback.ShareCallb
             TGA_URL= lin_url+"&lang="+lang;
 
         }
-
         Log.e("地址","TGA_URL="+TGA_URL);
         add_view.loadUrl(TGA_URL);
         add_view.setWebViewClient(new WebViewClient() {
@@ -211,8 +208,6 @@ public class HomeFragment extends MvpFragment implements  TGACallback.ShareCallb
                 super.onPageFinished(view, url);
                 alertDialog.dismiss();
             }*/
-
-
 
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//h5谷歌调试

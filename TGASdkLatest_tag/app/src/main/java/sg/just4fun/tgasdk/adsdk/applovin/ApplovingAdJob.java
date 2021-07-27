@@ -72,7 +72,7 @@ public class ApplovingAdJob implements MaxAdListener, MaxRewardedAdListener {
 
 
     @Override
-    public void onAdLoaded(MaxAd ad) {
+    public void onAdLoaded(MaxAd ad) {//预加载
         Log.d("fak123","onAdLoaded"+System.currentTimeMillis());
         final List<Consumer<Boolean>> cacheCallbacks = callbacks;
         this.callbacks = new LinkedList<>();
@@ -81,10 +81,13 @@ public class ApplovingAdJob implements MaxAdListener, MaxRewardedAdListener {
                 Log.e(TAG, "onAdLoaded But uuid lost, SDK will ignore this event");
             } else {
                 apiBean.onEvent(uuid, "onAdPreLoad"); //Report To SDK as event
-                if(placementType == ApplovingAdPlacementType.Interstitial||placementType == ApplovingAdPlacementType.Interstitial2) {
+                if(placementType == ApplovingAdPlacementType.Interstitial) {
                     apiBean.setInterstitialAdLoaded(true);
 //                    apiBean.getInterstitialAd().showAd();
-                } else if(placementType == ApplovingAdPlacementType.Reward) {
+                } else if(placementType == ApplovingAdPlacementType.Interstitial2){
+                    apiBean.setInterstitialAdLoaded2(true);
+
+                }else if(placementType == ApplovingAdPlacementType.Reward) {
                     apiBean.setRewardedAdLoaded(true);
 //                    apiBean.getRewardedAd().showAd();
                 }
@@ -102,7 +105,7 @@ public class ApplovingAdJob implements MaxAdListener, MaxRewardedAdListener {
     }
 
     @Override
-    public void onAdLoadFailed(String adUnitId, MaxError errorCode) {
+    public void onAdLoadFailed(String adUnitId, MaxError errorCode) {//
         int code = errorCode.getCode();
         Log.d("fak123","onAdLoadFailed"+System.currentTimeMillis());
         final List<Consumer<Boolean>> cacheCallbacks = callbacks;
