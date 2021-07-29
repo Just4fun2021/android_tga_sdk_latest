@@ -4,7 +4,6 @@ package sg.just4fun.tgasdk.web;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,23 +18,24 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import sg.just4fun.tgasdk.R;
 import sg.just4fun.tgasdk.callback.TGACallback;
+import sg.just4fun.tgasdk.conctart.Conctant;
 import sg.just4fun.tgasdk.modle.GooglePayInfoBean;
 import sg.just4fun.tgasdk.modle.UserInFoBean;
 import sg.just4fun.tgasdk.tga.base.HttpBaseResult;
 import sg.just4fun.tgasdk.tga.base.JsonCallback;
+import sg.just4fun.tgasdk.tga.base.HttpBaseMapResult;
 import sg.just4fun.tgasdk.tga.global.AppUrl;
 import sg.just4fun.tgasdk.tga.global.Global;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
 
 public class TgaSdk {
-
-
     public static Context mContext;
     public static  TGACallback.TgaEventListener listener;
     public static List<UserInFoBean.AdConfigBean> appConfigbeanList=new ArrayList<UserInFoBean.AdConfigBean>();
@@ -121,6 +121,7 @@ public class TgaSdk {
             @Override
             public void run() {
                 if (url==null||url.equals("")){
+                    String version = Conctant.getVersion(mContext);
                     if (isSuccess==1){
                         if (TgaSdk.listener!=null){
                             String url="";
@@ -137,10 +138,10 @@ public class TgaSdk {
                                 TgaSdkUserInFo userInFo = gson.fromJson(userInfo, TgaSdkUserInFo.class);
                                 if (TgaSdk.gameCentreUrl!=null&&!TgaSdk.gameCentreUrl.equals("")){
                                     if (schemeQuery!=null&&!schemeQuery.equals("")){
-                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
                                     }else {
 
-                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
                                     }
                                     Intent intent = new Intent(context, WebViewGameActivity.class);
                                     intent.putExtra("url",url);
@@ -243,26 +244,26 @@ public class TgaSdk {
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-        PostRequest<HttpBaseResult<UserInFoBean>> post = OkGo.<HttpBaseResult<UserInFoBean>>post(AppUrl.TGA_SDK_INFO);
+        PostRequest<HttpBaseMapResult> post = OkGo.<HttpBaseMapResult>post(AppUrl.TGA_SDK_INFO);
         post.tag(mContext);
         post.upRequestBody(body);
-        post.execute(new JsonCallback<HttpBaseResult<UserInFoBean>>() {
+        post.execute(new JsonCallback<HttpBaseMapResult>() {
             @Override
-            public void onSuccess(Response<HttpBaseResult<UserInFoBean>> response) {
+            public void onSuccess(Response<HttpBaseMapResult> response) {
                 try{
                     if (response.body().getStateCode() == 1) {
                         if (listener!=null){
-                            listener.getTgaSdkUserInfo(response.body().getResultInfo());
+                            Map<String, Object> resultInfo = response.body().getResultInfo();
                             String pkName = mContext.getPackageName();
-                            sdkPkName = response.body().getResultInfo().getPackageName();
+                            sdkPkName = (String)resultInfo.get("packageName");
                             if (sdkPkName!=null&&!sdkPkName.equals("")){
                                 if (sdkPkName.equals(pkName)){//包名相等
                                     isSuccess=1;
                                     initCallback.initSucceed();
-                                     appId = response.body().getResultInfo().getAppId();
-                                     iconpath = response.body().getResultInfo().getIconpath();
-                                     packageName = response.body().getResultInfo().getPackageName();
-                                    appConfigList = response.body().getResultInfo().getAppConfig();
+                                    appId = (String)resultInfo.get("appId");
+                                    iconpath = (String)resultInfo.get("iconpath");
+                                    packageName = (String)resultInfo.get("packageName");
+                                    appConfigList =(String)resultInfo.get("appConfig");
                                     Log.e("初始化", "配置表==" +appConfigList);
                                     if(appConfigList!=null&&!appConfigList.equals("")){
                                         Gson gson = new Gson();
@@ -321,7 +322,7 @@ public class TgaSdk {
             }
 
             @Override
-            public void onError(Response<HttpBaseResult<UserInFoBean>> response) {
+            public void onError(Response<HttpBaseMapResult> response) {
                 isSuccess=0;
                 initCallback.initError("errorCode=" + -5);
                 Log.e("初始化", "充值失败=" + response.getException().getMessage());

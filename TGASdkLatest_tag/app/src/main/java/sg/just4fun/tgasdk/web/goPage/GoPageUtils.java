@@ -15,7 +15,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import sg.just4fun.tgasdk.conctart.Conctant;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
+import sg.just4fun.tgasdk.web.Conctart;
 import sg.just4fun.tgasdk.web.TgaSdk;
 import sg.just4fun.tgasdk.web.WebViewGameActivity;
 
@@ -27,20 +29,33 @@ public class GoPageUtils {
     private static Activity context;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void  jumpGame(int page,WebView tgawebView,Activity context, String uuid, String url) {
+    public static void  jumpGame(int page,WebView tgawebView,Activity context, String uuid, String options) {
         GoPageUtils.tgawebView=tgawebView;
         GoPageUtils.uuid=uuid;
         GoPageUtils.context=context;
-        String userInfo = TgaSdk.listener.getUserInfo();
         Gson gson = new Gson();
-        TgaSdkUserInFo tgaSdkUserInFo = gson.fromJson(userInfo, TgaSdkUserInFo.class);
-//        url=url+"&txnid="+tgaSdkUserInFo.getId()+"&appId="+ TgaSdk.appId;
-        Log.e("链接","链接="+url);
-        Intent intent = new Intent(context, WebViewGameActivity.class);
-        intent.putExtra("url",url);
-        intent.putExtra("uuid",uuid);
-        intent.putExtra("gopag",1);
-        context.startActivity(intent);
+        boolean badJson = Conctant.isBadJson(options);
+        if (badJson){
+            StatusaAndNavigationModel statusaAndNavigationModel = gson.fromJson(options, StatusaAndNavigationModel.class);
+            StatusaAndNavigationModel.NavigationBarModel navigationBar = statusaAndNavigationModel.getNavigationBar();
+            StatusaAndNavigationModel.NavigationBarModel statusBarDisplay = statusaAndNavigationModel.getStatusBarDisplay();
+            Log.e("链接","链接="+statusaAndNavigationModel.getUrl());
+            Intent intent = new Intent(context, WebViewGameActivity.class);
+            intent.putExtra("url",statusaAndNavigationModel.getUrl());
+            intent.putExtra("uuid",uuid);
+            intent.putExtra("gopag",1);
+            intent.putExtra("statusaBar",statusBarDisplay.isDisplay());
+            intent.putExtra("statusaBarColor",statusBarDisplay.getBackgroundColor());
+            intent.putExtra("navigationBar",navigationBar.isDisplay());
+            intent.putExtra("backgroundColor",navigationBar.getBackgroundColor());
+            context.startActivity(intent);
+        }else {
+            Intent intent = new Intent(context, WebViewGameActivity.class);
+            intent.putExtra("url",options);
+            intent.putExtra("uuid",uuid);
+            intent.putExtra("gopag",1);
+            context.startActivity(intent);
+        }
             try {
                 GoPageInfo goPageInfo1 = new GoPageInfo(uuid, "36");
                 String s = goPageInfo1.toJson().toString();
@@ -83,7 +98,6 @@ public class GoPageUtils {
             this.scriptCode = scriptCode;
             this.webView = webView;
         }
-
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void run() {

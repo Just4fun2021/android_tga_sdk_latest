@@ -30,6 +30,7 @@ import sg.just4fun.tgasdk.R;
 import sg.just4fun.tgasdk.adsdk.TgaAdSdkUtils;
 import sg.just4fun.tgasdk.adsdk.applovin.ApplovinApiBean;
 import sg.just4fun.tgasdk.callback.TGACallback;
+import sg.just4fun.tgasdk.conctart.Conctant;
 import sg.just4fun.tgasdk.tga.mvp.MvpFragment;
 import sg.just4fun.tgasdk.tga.mvp.MvpPresenter;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
@@ -131,16 +132,17 @@ public class HomeFragment extends MvpFragment implements  TGACallback.ShareCallb
             TgaSdk.listener.quitLogin(getActivity());
             return;
         }
+        String version = Conctant.getVersion(getActivity());
         Log.e("啥呀","啥呀="+TgaSdk.gameCentreUrl);
 //        TGA_URL = "https://data.just4fun.sg/h5tga4bip/?txn_id=18&msisdn=456&togameid=56&lang=tr&appversion=3.76";
         if (lin_url==null||lin_url.equals("")){
             if (tgaSdkUserInFo!=null&&tgaSdkUserInFo.getUserId()!=null){
                 if (tgaSdkUserInFo.getGameId()!=null&&!tgaSdkUserInFo.getGameId().equals("")){
-                    TGA_URL = TgaSdk.gameCentreUrl+ "?txnid="+tgaSdkUserInFo.getUserId()+"&appId="+ TgaSdk.appId+"&hidebar=1" +"&lang="+lang+"&nickname="+tgaSdkUserInFo.getNickname()+"&"+tgaSdkUserInFo.getGameId()+"&head="+tgaSdkUserInFo.getAvatar();//无底部
+                    TGA_URL = TgaSdk.gameCentreUrl+ "?txnid="+tgaSdkUserInFo.getUserId()+"&appId="+ TgaSdk.appId+"&hidebar=1" +"&lang="+lang+"&nickname="+tgaSdkUserInFo.getNickname()+"&"+tgaSdkUserInFo.getGameId()+"&msisdn="+tgaSdkUserInFo.getUserId()+"&appversion="+version+"&head="+tgaSdkUserInFo.getAvatar();//无底部
 
                 }else {
 
-                    TGA_URL = TgaSdk.gameCentreUrl+ "?txnid="+tgaSdkUserInFo.getUserId()+"&appId="+ TgaSdk.appId+"&hidebar=1" +"&lang="+lang+"&nickname="+tgaSdkUserInFo.getNickname()+"&head="+tgaSdkUserInFo.getAvatar();//无底部
+                    TGA_URL = TgaSdk.gameCentreUrl+ "?txnid="+tgaSdkUserInFo.getUserId()+"&appId="+ TgaSdk.appId+"&hidebar=1" +"&lang="+lang+"&nickname="+tgaSdkUserInFo.getNickname()+"&msisdn="+tgaSdkUserInFo.getUserId()+"&appversion="+version+"&head="+tgaSdkUserInFo.getAvatar();//无底部
                 }
             }else {
                 TGA_URL = TgaSdk.gameCentreUrl;

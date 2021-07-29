@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import sg.just4fun.tgasdk.R;
 import sg.just4fun.tgasdk.callback.TGACallback;
+import sg.just4fun.tgasdk.conctart.Conctant;
 import sg.just4fun.tgasdk.tga.mvp.MvpFragment;
 import sg.just4fun.tgasdk.tga.mvp.MvpPresenter;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
@@ -105,8 +106,9 @@ if ( TgaSdk.listener!=null){
         String  userInfo = TgaSdk.listener.getUserInfo();
         Gson gson = new Gson();
         TgaSdkUserInFo tgaSdkUserInFo = gson.fromJson(userInfo, TgaSdkUserInFo.class);
+        String version = Conctant.getVersion(getActivity());
         if (userInfo!=null&&tgaSdkUserInFo.getUserId()!=null){
-            TGA_URL = TgaSdk.gameCentreUrl+ "?txnid="+tgaSdkUserInFo.getUserId()+"&appId="+ TgaSdk.appId+"&hidebar=1"+"&nickname="+tgaSdkUserInFo.getNickname()+"&head="+tgaSdkUserInFo.getAvatar();//无底部
+            TGA_URL = TgaSdk.gameCentreUrl+ "?txnid="+tgaSdkUserInFo.getUserId()+"&appId="+ TgaSdk.appId+"&hidebar=1"+"&nickname="+tgaSdkUserInFo.getNickname()+"&msisdn="+tgaSdkUserInFo.getUserId()+"&appversion="+version+"&head="+tgaSdkUserInFo.getAvatar();//无底部
             if(lang!=null) {
                 TGA_URL =TGA_URL+ "&lang=" + urlEncode(lang)+"#/me";
             }else {

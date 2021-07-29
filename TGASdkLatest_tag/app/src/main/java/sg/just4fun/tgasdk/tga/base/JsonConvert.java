@@ -68,6 +68,7 @@ public class JsonConvert<T> implements Converter<T> {
 
         if (type instanceof ParameterizedType) {
             return parseParameterizedType(response, (ParameterizedType) type);
+
         } else if (type instanceof Class) {
             return parseClass(response, (Class<?>) type);
         } else {

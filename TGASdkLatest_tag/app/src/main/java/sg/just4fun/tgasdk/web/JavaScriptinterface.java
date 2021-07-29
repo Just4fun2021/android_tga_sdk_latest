@@ -387,15 +387,16 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @JavascriptInterface
     public void goPage(String uuid,  String options) {
-        Log.e("goPage","goPage");
+        Log.e("goPage","goPage"+options);
         pageId++;
         GoPageUtils.jumpGame(pageId,webview,context,uuid,options);
     }
 
     @JavascriptInterface
     public void finishPage(String uuid,  String options) {
-            context.finish(); //返回键点击
-               GoogleBillingUtil.cleanListener();
+         context.finish(); //返回键点击
+        Log.e("finishPage","关闭");
+         GoogleBillingUtil.cleanListener();
     }
     @JavascriptInterface
     public void getPayAppid(String uuid,  String options) {
@@ -470,8 +471,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
         }
 
     }
-
-
 
     @JavascriptInterface
     public void thirdPartyShare(String uuid,  String options) {
@@ -603,6 +602,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 Log.e("googlePayWay","number="+number+" number.length()"+number.length());
 
                 String xsStr = number.substring(number.indexOf("."));
+
                 int i = xsStr.length() - 1;
                 String replace = xsStr.replace(".", "");
                 long pow = (long) Math.pow(10, i);
@@ -798,6 +798,9 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     @Override
                     public void onSuccess(Response<HttpBaseResult<ResultBean>> response) {
                    Log.e("googlePayWay","通知成功"+response.body().getResultInfo());
+
+
+
                     }
                     @Override
                     public void onError(Response<HttpBaseResult<ResultBean>> response) {
@@ -886,5 +889,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     }
                 });
     }
+
+
 
 }

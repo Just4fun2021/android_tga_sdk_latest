@@ -3,6 +3,7 @@ package sg.just4fun.tgasdk.modle;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 import sg.just4fun.tgasdk.adsdk.TgaSdkJsonEntity;
 import sg.just4fun.tgasdk.web.banner.AppLovinAdPlacementConfig;
@@ -18,7 +19,7 @@ public class UserInFoBean {
     private String iconpath;
     private String appName;
 
-    public String getAppName() {
+    public String  getAppName() {
         return appName;
     }
 

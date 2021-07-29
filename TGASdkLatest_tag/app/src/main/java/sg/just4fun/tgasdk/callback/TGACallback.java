@@ -31,9 +31,6 @@ public class TGACallback {
 
         String getLang();
 
-        default void getTgaSdkUserInfo(UserInFoBean userInFoBean) {
-
-        }
 
     }
 
