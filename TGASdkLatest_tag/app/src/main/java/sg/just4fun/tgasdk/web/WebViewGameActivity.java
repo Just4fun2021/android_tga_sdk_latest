@@ -89,7 +89,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         img_loading = findViewById(R.id.img_loading);
         rl_loading = findViewById(R.id.rl_loading);
         add_view = findViewById(R.id.add_view1);
-         image_black = findViewById(R.id.image_black);
+        image_black = findViewById(R.id.image_black);
         tv_webtitle = findViewById(R.id.tv_webtitle);
         relayout = findViewById(R.id.relayout);
         tv_stuasbar = findViewById(R.id.tv_stuasbar);
@@ -108,7 +108,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         if (statusaBarColor!=null){
             tv_stuasbar.setBackgroundColor(Color.parseColor(statusaBarColor));
         }else {
-            backgroundColor="#50000000";
+            statusaBarColor="#50000000";
             tv_stuasbar.setBackgroundColor(Color.parseColor(statusaBarColor));
         }
         if (backgroundColor!=null){
