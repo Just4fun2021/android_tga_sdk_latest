@@ -265,13 +265,13 @@ public class TgaSdk {
                                     packageName = (String)resultInfo.get("packageName");
                                     appConfigList =(String)resultInfo.get("appConfig");
                                     Log.e("初始化", "配置表==" +appConfigList);
-                                    if(appConfigList!=null&&!appConfigList.equals("")){
+                                    if(appConfigList!=null&&!appConfigList.equals("")&&!appConfigList.equals("{}")){
                                         Gson gson = new Gson();
                                         UserInFoBean.AppConfig adConfigBean = gson.fromJson(appConfigList, UserInFoBean.AppConfig.class);
                                         try{
                                             gameCentreUrl = Objects.requireNonNull(requireNotBlankString(adConfigBean.getGameCentreUrl()));
                                         }catch (Exception e){
-                                            gameCentreUrl= Global.YUMING + "/h5tga";
+                                            gameCentreUrl= Global.TEST_MOREN;
                                         }
                                         if (adConfigBean!=null){
                                             List<UserInFoBean.AdConfigBean> adList =  adConfigBean.getAd();
@@ -291,9 +291,8 @@ public class TgaSdk {
 
 
                                     }else {
-                                        gameCentreUrl= Global.YUMING + "/h5tga";
+                                        gameCentreUrl= Global.TEST_MOREN;
                                     }
-
                                     getGooglePayInfo(appId);
                                     Log.e("tgasdk", "ad配置表==" + applovnIdConfig);
                                 }else {
