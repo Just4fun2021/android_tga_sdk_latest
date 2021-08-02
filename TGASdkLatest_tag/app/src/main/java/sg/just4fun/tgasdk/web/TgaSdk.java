@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
@@ -30,7 +29,6 @@ import sg.just4fun.tgasdk.modle.GooglePayInfoBean;
 import sg.just4fun.tgasdk.modle.UserInFoBean;
 import sg.just4fun.tgasdk.tga.base.HttpBaseResult;
 import sg.just4fun.tgasdk.tga.base.JsonCallback;
-import sg.just4fun.tgasdk.tga.base.HttpBaseMapResult;
 import sg.just4fun.tgasdk.tga.global.AppUrl;
 import sg.just4fun.tgasdk.tga.global.Global;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
@@ -54,6 +52,7 @@ public class TgaSdk {
     public static String iconpath;
     public static String packageName;
     public static String schemeUrl;
+    private static String sds;
 
 
     private TgaSdk() {
@@ -72,10 +71,12 @@ public class TgaSdk {
         mContext = context.getApplicationContext();
         TgaSdk.appKey= appKey;
         TgaSdk.schemeUrl= schemeUrl;
-
         TgaSdk.listener = listener;
+        Log.e(TGA,"listener是不是空了="+listener);
         TgaSdk.initCallback=initCallback;
+        Log.e(TGA,"linitCallback是不是空了="+initCallback);
         TgaSdk.appPaymentKey = appPaymentKey;
+        Log.e(TGA,"appPaymentKey是不是空了="+appPaymentKey);
 //       获取用户配置表
         getUserInfo(appKey);
     }
@@ -123,7 +124,9 @@ public class TgaSdk {
                 if (url==null||url.equals("")){
                     String version = Conctant.getVersion(mContext);
                     if (isSuccess==1){
+                        Log.e("初始化","isSuccess==1");
                         if (TgaSdk.listener!=null){
+                            Log.e("初始化","TgaSdk.listener");
                             String url="";
                             String userInfo = TgaSdk.listener.getUserInfo();
                             if(userInfo==null||userInfo.equals("")){
@@ -149,16 +152,19 @@ public class TgaSdk {
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(intent);
                                 }else {
+                                    Log.e("初始化","isSuccess==0");
                                     initCallback.initError(mContext.getResources().getString(R.string.sdkerror));
                                 }
                             }
 
                             return;
                       }else {
+                            Log.e("初始化","TgaSdk.listener=null");
                             initCallback.initError(mContext.getResources().getString(R.string.sdkerror));
                             return;
                         }
                     }else {
+                        Log.e("初始化","TgaSdk.listener=null");
                         initCallback.initError(mContext.getResources().getString(R.string.sdkerror));
                         return;
                     }
@@ -244,29 +250,42 @@ public class TgaSdk {
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-        PostRequest<HttpBaseMapResult> post = OkGo.<HttpBaseMapResult>post(AppUrl.TGA_SDK_INFO);
+        PostRequest<HttpBaseResult> post = OkGo.<HttpBaseResult>post(AppUrl.TGA_SDK_INFO);
         post.tag(mContext);
         post.upRequestBody(body);
-        post.execute(new JsonCallback<HttpBaseMapResult>() {
+        post.execute(new JsonCallback<HttpBaseResult>() {
             @Override
-            public void onSuccess(Response<HttpBaseMapResult> response) {
+            public void onSuccess(Response<HttpBaseResult> response) {
                 try{
+                    Gson gson = new Gson();
+//                    String s = response.body().toString();
+//                    JSONObject jsonObject2 = new JSONObject(s);
+//                    int stateCode = jsonObject2.getInt("stateCode");
+//                    Log.e(TGA,"初始化成功的="+s+" stateCode="+stateCode);
                     if (response.body().getStateCode() == 1) {
+                        Log.e(TGA,"初始化成功的=");
                         if (listener!=null){
-                            Map<String, Object> resultInfo = response.body().getResultInfo();
+                            Log.e(TGA,"listener是不是空了="+response.body().getResultInfo());
+                            String resultInfo1 = gson.toJson(response.body().getResultInfo()) ;
+                            Log.e(TGA,"listener是不是空了resultInfo1"+resultInfo1);
+                            JSONObject jsonObject1 = new JSONObject(resultInfo1);
                             String pkName = mContext.getPackageName();
-                            sdkPkName = (String)resultInfo.get("packageName");
-                            if (sdkPkName!=null&&!sdkPkName.equals("")){
-                                if (sdkPkName.equals(pkName)){//包名相等
+                            if (jsonObject1.has("packageName")){
+                                packageName = (String)jsonObject1.get("packageName");
+                            }
+                            if (packageName!=null&&!packageName.equals("")){
+                                if (packageName.equals(pkName)){//包名相等
                                     isSuccess=1;
                                     initCallback.initSucceed();
-                                    appId = (String)resultInfo.get("appId");
-                                    iconpath = (String)resultInfo.get("iconpath");
-                                    packageName = (String)resultInfo.get("packageName");
-                                    appConfigList =(String)resultInfo.get("appConfig");
-                                    Log.e("初始化", "配置表==" +appConfigList);
+                                    appId = (String)jsonObject1.get("appId");
+                                    if (jsonObject1.has("iconpath")){
+                                        iconpath = (String)jsonObject1.get("iconpath");
+                                    }
+                                    if (jsonObject1.has("appConfig")){
+                                        appConfigList = (String)jsonObject1.get("appConfig");
+                                    }
+
                                     if(appConfigList!=null&&!appConfigList.equals("")&&!appConfigList.equals("{}")){
-                                        Gson gson = new Gson();
                                         UserInFoBean.AppConfig adConfigBean = gson.fromJson(appConfigList, UserInFoBean.AppConfig.class);
                                         try{
                                             gameCentreUrl = Objects.requireNonNull(requireNotBlankString(adConfigBean.getGameCentreUrl()));
@@ -277,7 +296,6 @@ public class TgaSdk {
                                             List<UserInFoBean.AdConfigBean> adList =  adConfigBean.getAd();
                                             if(adList == null || adList.isEmpty()) {
                                                 applovnIdConfig = null;
-                                                Toast.makeText(mContext,"广告模块没有配置",Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Log.e("tgasdk", "ad配置表==" + adList.size());
                                                 try{
@@ -296,22 +314,24 @@ public class TgaSdk {
                                     getGooglePayInfo(appId);
                                     Log.e("tgasdk", "ad配置表==" + applovnIdConfig);
                                 }else {
+                                    Log.e(TGA,"包名不一致=");
                                     isSuccess=0;
                                     initCallback.initError(mContext.getResources().getString(R.string.packagename));
                                 }
                             }else {
+                                Log.e(TGA,"包名不一致=");
                                 isSuccess=0;
                                 initCallback.initError(mContext.getResources().getString(R.string.packagename));
                             }
 
                         }else {
                             isSuccess=0;
-                            initCallback.initError("errorCode=" + response.body().getStateCode());
+                            initCallback.initError("TgaEventListener接口为空");
                         }
 
                     } else {
                         isSuccess=0;
-                        initCallback.initError("errorCode=" + response.body().getStateCode());
+                        initCallback.initError("服务端errorCode=" + response.body().getStateCode());
                     }
                 } catch(Exception e) {
                     isSuccess = 0;
@@ -321,7 +341,7 @@ public class TgaSdk {
             }
 
             @Override
-            public void onError(Response<HttpBaseMapResult> response) {
+            public void onError(Response<HttpBaseResult> response) {
                 isSuccess=0;
                 initCallback.initError("errorCode=" + -5);
                 Log.e("初始化", "充值失败=" + response.getException().getMessage());

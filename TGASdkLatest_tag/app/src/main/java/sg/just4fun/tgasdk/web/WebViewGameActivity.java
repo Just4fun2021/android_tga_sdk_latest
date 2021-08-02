@@ -127,15 +127,15 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                 GoogleBillingUtil.cleanListener();
             }
         });
-
-        if (navigationBar){
-            relayout.setVisibility(View.VISIBLE);
-        }else {
-            relayout.setVisibility(View.GONE);
-        }
         if (gopag==1){
+            if (navigationBar){
+                relayout.setVisibility(View.VISIBLE);
+            }else {
+                relayout.setVisibility(View.GONE);
+            }
             upWebview(gopag,"",add_view);
         }else {
+                relayout.setVisibility(View.GONE);
             int change = SpUtils.getInt(this, "change", -1);
             if (change==1){
                 String string = SpUtils.getString(this, "changelang", "");
