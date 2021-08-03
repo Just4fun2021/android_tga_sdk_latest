@@ -262,6 +262,7 @@ public class TgaSdk {
                             .serializeNulls()
                             .create();
                     Log.e(TGA,"初始化成功的="+response.body().getStateCode());
+                    Log.e(TGA,"resultInfo内容="+gson.toJson(response.body().getResultInfo()));
                     if (response.body().getStateCode() == 1) {
                         Log.e(TGA,"初始化成功的=");
                         if (listener!=null){
