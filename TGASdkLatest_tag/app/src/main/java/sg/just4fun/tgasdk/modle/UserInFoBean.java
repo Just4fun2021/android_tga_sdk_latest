@@ -9,6 +9,7 @@ import sg.just4fun.tgasdk.adsdk.TgaSdkJsonEntity;
 import sg.just4fun.tgasdk.web.banner.AppLovinAdPlacementConfig;
 
 public class UserInFoBean {
+
     public UserInFoBean() {
     }
     private String appId;

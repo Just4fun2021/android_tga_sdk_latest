@@ -9,6 +9,9 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.adapter.Call;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.PostRequest;
 
@@ -53,8 +56,6 @@ public class TgaSdk {
     public static String iconpath;
     public static String packageName;
     public static String schemeUrl;
-    private static String sds;
-
 
     private TgaSdk() {
 
@@ -242,6 +243,8 @@ public class TgaSdk {
     }
 
     public static void getUserInfo(String appKe){
+
+
         JSONObject jsonObject = new JSONObject();
         String data = "{}";
         try {
@@ -252,25 +255,29 @@ public class TgaSdk {
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-        PostRequest<HttpBaseResult<UserInFoBean>> post = OkGo.<HttpBaseResult<UserInFoBean>>post(AppUrl.TGA_SDK_INFO);
+        PostRequest post = OkGo.post(AppUrl.TGA_SDK_INFO);
         post.tag(mContext);
         post.upRequestBody(body);
-        post.execute(new JsonCallback<HttpBaseResult<UserInFoBean>>() {
+        post.execute(new JsonCallback<String>() {
             @Override
-            public void onSuccess(Response<HttpBaseResult<UserInFoBean>> response) {
+            public void onSuccess(Response response) {
+                String s1 = response.body().toString();
+                Log.e(TGA,"初始化成功的="+s1);
                 Gson gson = new GsonBuilder()
                         .serializeNulls()
                         .create();
-                Log.e(TGA,"初始化成功的="+response.body().getStateCode());
-                Log.e(TGA,"resultInfo内容="+gson.toJson(response.body().getResultInfo()));
+                HttpBaseResult httpBaseResult = gson.fromJson(s1, HttpBaseResult.class);
+                Log.e(TGA,"初始化成功的="+httpBaseResult.getStateCode());
+                Log.e(TGA,"resultInfo内容="+gson.toJson(httpBaseResult.getResultInfo()));
                 try{
-                    if (response.body().getStateCode() == 1) {
+                    if (httpBaseResult.getStateCode() == 1) {
                         Log.e(TGA,"初始化成功的=");
                         if (listener!=null){
-                            Log.e(TGA,"listener是不是空了="+response.body().getResultInfo());
+                            Log.e(TGA,"listener是不是空了="+gson.toJson(httpBaseResult.getResultInfo()));
 //                            String resultInfo1 = gson.toJson(response.body().getResultInfo()) ;
-                            UserInFoBean resultInfo = response.body().getResultInfo();
-                            Log.e(TGA,"listener是不是空了resultInfo1"+gson.toJson(response.body().getResultInfo()));
+                            String s = gson.toJson(httpBaseResult.getResultInfo());
+                            UserInFoBean resultInfo = gson.fromJson(s, UserInFoBean.class);
+                            Log.e(TGA,"listener是不是空了resultInfo1"+gson.toJson(httpBaseResult.getResultInfo()));
 //                            JSONObject jsonObject1 = new JSONObject(resultInfo1);
                             String pkName = mContext.getPackageName();
 //                            if (jsonObject1.has("packageName")){
@@ -337,7 +344,7 @@ public class TgaSdk {
 
                     } else {
                         isSuccess=0;
-                        initCallback.initError("服务端errorCode=" + response.body().getStateCode());
+                        initCallback.initError("服务端errorCode=" + httpBaseResult.getStateCode());
                     }
                 } catch(Exception e) {
                     isSuccess = 0;
@@ -347,7 +354,7 @@ public class TgaSdk {
             }
 
             @Override
-            public void onError(Response<HttpBaseResult<UserInFoBean>> response) {
+            public void onError(Response response) {
                 isSuccess=0;
                 initCallback.initError("errorCode=" + -5);
                 Log.e("初始化", "充值失败=" + response.getException().getMessage());
