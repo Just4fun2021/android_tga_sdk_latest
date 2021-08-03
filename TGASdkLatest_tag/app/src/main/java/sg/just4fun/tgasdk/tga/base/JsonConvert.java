@@ -119,8 +119,10 @@ public class JsonConvert<T> implements Converter<T> {
         Type rawType = type.getRawType();                     // 泛型的实际类型
         Type typeArgument = type.getActualTypeArguments()[0]; // 泛型的参数
         if (rawType != HttpBaseResult.class) {
+            Log.e("googlePayWay","rawType");
             // 泛型格式如下： new JsonCallback<外层BaseBean<内层JavaBean>>(this)
             T t = Convert.fromJson(jsonReader, type);
+            Log.e("googlePayWay","rawType"+t.toString());
             response.close();
             return t;
         } else {

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.PostRequest;
@@ -153,19 +154,19 @@ public class TgaSdk {
                                     context.startActivity(intent);
                                 }else {
                                     Log.e("初始化","isSuccess==0");
-                                    initCallback.initError(mContext.getResources().getString(R.string.sdkerror));
+                                    initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
                                 }
                             }
 
                             return;
                       }else {
                             Log.e("初始化","TgaSdk.listener=null");
-                            initCallback.initError(mContext.getResources().getString(R.string.sdkerror));
+                            initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
                             return;
                         }
                     }else {
                         Log.e("初始化","TgaSdk.listener=null");
-                        initCallback.initError(mContext.getResources().getString(R.string.sdkerror));
+                        initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
                         return;
                     }
                 }
@@ -250,41 +251,44 @@ public class TgaSdk {
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-        PostRequest<HttpBaseResult> post = OkGo.<HttpBaseResult>post(AppUrl.TGA_SDK_INFO);
+        PostRequest<HttpBaseResult<UserInFoBean>> post = OkGo.<HttpBaseResult<UserInFoBean>>post(AppUrl.TGA_SDK_INFO);
         post.tag(mContext);
         post.upRequestBody(body);
-        post.execute(new JsonCallback<HttpBaseResult>() {
+        post.execute(new JsonCallback<HttpBaseResult<UserInFoBean>>() {
             @Override
-            public void onSuccess(Response<HttpBaseResult> response) {
+            public void onSuccess(Response<HttpBaseResult<UserInFoBean>> response) {
                 try{
-                    Gson gson = new Gson();
-//                    String s = response.body().toString();
-//                    JSONObject jsonObject2 = new JSONObject(s);
-//                    int stateCode = jsonObject2.getInt("stateCode");
-//                    Log.e(TGA,"初始化成功的="+s+" stateCode="+stateCode);
+                    Gson gson = new GsonBuilder()
+                            .serializeNulls()
+                            .create();
+                    Log.e(TGA,"初始化成功的="+response.body().getStateCode());
                     if (response.body().getStateCode() == 1) {
                         Log.e(TGA,"初始化成功的=");
                         if (listener!=null){
                             Log.e(TGA,"listener是不是空了="+response.body().getResultInfo());
-                            String resultInfo1 = gson.toJson(response.body().getResultInfo()) ;
-                            Log.e(TGA,"listener是不是空了resultInfo1"+resultInfo1);
-                            JSONObject jsonObject1 = new JSONObject(resultInfo1);
+//                            String resultInfo1 = gson.toJson(response.body().getResultInfo()) ;
+                            UserInFoBean resultInfo = response.body().getResultInfo();
+                            Log.e(TGA,"listener是不是空了resultInfo1"+gson.toJson(response.body().getResultInfo()));
+//                            JSONObject jsonObject1 = new JSONObject(resultInfo1);
                             String pkName = mContext.getPackageName();
-                            if (jsonObject1.has("packageName")){
-                                packageName = (String)jsonObject1.get("packageName");
-                            }
-                            if (packageName!=null&&!packageName.equals("")){
+//                            if (jsonObject1.has("packageName")){
+//                                packageName = (String)jsonObject1.get("packageName");
+//                            }
+                             packageName = resultInfo.getPackageName();
+                            if (packageName !=null&&!packageName.equals("")){
                                 if (packageName.equals(pkName)){//包名相等
                                     isSuccess=1;
                                     initCallback.initSucceed();
-                                    appId = (String)jsonObject1.get("appId");
-                                    if (jsonObject1.has("iconpath")){
-                                        iconpath = (String)jsonObject1.get("iconpath");
-                                    }
-                                    if (jsonObject1.has("appConfig")){
-                                        appConfigList = (String)jsonObject1.get("appConfig");
-                                    }
-
+//                                    appId = (String)jsonObject1.get("appId");
+                                     appId = resultInfo.getAppId();
+//                                    if (jsonObject1.has("iconpath")){
+//                                        iconpath = (String)jsonObject1.get("iconpath");
+//                                    }
+                                     iconpath = resultInfo.getIconpath();
+//                                    if (jsonObject1.has("appConfig")){
+//                                        appConfigList = (String)jsonObject1.get("appConfig");
+//                                    }
+                                    appConfigList = resultInfo.getAppConfig();
                                     if(appConfigList!=null&&!appConfigList.equals("")&&!appConfigList.equals("{}")){
                                         UserInFoBean.AppConfig adConfigBean = gson.fromJson(appConfigList, UserInFoBean.AppConfig.class);
                                         try{
@@ -311,7 +315,7 @@ public class TgaSdk {
                                     }else {
                                         gameCentreUrl= Global.TEST_MOREN;
                                     }
-                                    getGooglePayInfo(appId);
+                                    getGooglePayInfo(TgaSdk.appId);
                                     Log.e("tgasdk", "ad配置表==" + applovnIdConfig);
                                 }else {
                                     Log.e(TGA,"包名不一致=");
@@ -341,7 +345,7 @@ public class TgaSdk {
             }
 
             @Override
-            public void onError(Response<HttpBaseResult> response) {
+            public void onError(Response<HttpBaseResult<UserInFoBean>> response) {
                 isSuccess=0;
                 initCallback.initError("errorCode=" + -5);
                 Log.e("初始化", "充值失败=" + response.getException().getMessage());

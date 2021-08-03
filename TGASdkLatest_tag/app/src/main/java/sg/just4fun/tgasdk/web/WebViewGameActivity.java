@@ -3,6 +3,7 @@ package sg.just4fun.tgasdk.web;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -68,7 +69,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
     private TextView tv_webtitle;
     private RelativeLayout relayout;
     private String backgroundColor;
-    private TextView tv_stuasbar;
+    public static TextView tv_stuasbar;
     private String statusaBarColor;
 
     public static String urlEncode(String text) {
@@ -98,7 +99,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
         gopag = intent.getIntExtra("gopag", -1);
-        statusaBar = intent.getBooleanExtra("statusaBar",false);
+        statusaBar = intent.getBooleanExtra("statusaBar",true);
         navigationBar = intent.getBooleanExtra("navigationBar",true);
         backgroundColor = intent.getStringExtra("backgroundColor");
         statusaBarColor = intent.getStringExtra("statusaBarColor");

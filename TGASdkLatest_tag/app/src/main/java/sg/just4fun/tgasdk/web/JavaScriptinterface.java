@@ -7,6 +7,8 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -332,6 +334,11 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     @JavascriptInterface
     public void HorizontalScreen(String uuid, String options) {
         Log.e("HorizontalScreen","横屏options="+options);
+        WebViewGameActivity.tv_stuasbar.setVisibility(View.GONE);
+        WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+        lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        context.getWindow().setAttributes(lp);
+        context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         context.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 

@@ -1,14 +1,18 @@
 package sg.just4fun.tgasdk.tga.utils;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.google.gson.stream.JsonReader;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.Date;
 
 import sg.just4fun.tgasdk.tga.base.JsonConvertor;
 
@@ -28,7 +32,10 @@ public class Convert {
     }
 
     private static class GsonHolder {
-        private static Gson gson = new Gson();
+
+        private static Gson gson =   new GsonBuilder()
+                    .serializeNulls()
+                    .create();
     }
 
     public static <T> T fromJson(String json, Class<T> type) throws JsonIOException, JsonSyntaxException {

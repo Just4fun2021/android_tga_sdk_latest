@@ -10,9 +10,7 @@ import sg.just4fun.tgasdk.web.banner.AppLovinAdPlacementConfig;
 
 public class UserInFoBean {
     public UserInFoBean() {
-
     }
-
     private String appId;
     private String packageName;
     private String appConfig;
@@ -97,9 +95,6 @@ public class UserInFoBean {
             this. gameCentreUrl=gameCentreUrl;
             this. appId=appId;
         }
-
-
-
         public String getAppId() {
             return appId;
         }
