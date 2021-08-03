@@ -262,7 +262,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                                     super.onPageStarted(view, url, favicon);
                                     rl_loading.setVisibility(View.GONE);
 
-                                    Log.e("执行","onPageStarted="+url);
+                                    Log.e(TGA,"onPageStarted="+url);
                                     if (!url.startsWith(url) && !url.contains("paypal")) {
 //                    alertDialog.show();
 //                    alertDialog.getWindow().setBackgroundDrawableResource(R.color.translucent_background);

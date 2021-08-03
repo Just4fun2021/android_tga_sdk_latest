@@ -102,12 +102,12 @@ public class TgaSdk {
                     public void onSuccess(Response<HttpBaseResult<GooglePayInfoBean>> response) {
                         if (response.body().getStateCode() == 1) {
                            infoList = response.body().getResultInfo().getData();
-                           Log.e("崩了","崩了="+infoList);
+                           Log.e(TGA,"google支付配置="+infoList);
                         }
                     }
                     @Override
                     public void onError(Response<HttpBaseResult<GooglePayInfoBean>> response) {
-                     Log.e("初始化","失败="+response.message());
+                     Log.e(TGA,"google支付配置失败="+response.message());
                     }
                 });
 
@@ -125,12 +125,13 @@ public class TgaSdk {
                 if (url==null||url.equals("")){
                     String version = Conctant.getVersion(mContext);
                     if (isSuccess==1){
-                        Log.e("初始化","isSuccess==1");
+                        Log.e(TGA,"isSuccess==1");
                         if (TgaSdk.listener!=null){
-                            Log.e("初始化","TgaSdk.listener");
+                            Log.e(TGA,"TgaSdk.listener不为空");
                             String url="";
                             String userInfo = TgaSdk.listener.getUserInfo();
                             if(userInfo==null||userInfo.equals("")){
+                                Log.e(TGA,"用户信息为空");
                                 url= TgaSdk.gameCentreUrl+"?appId="+ TgaSdk.appId;//无底部
                                 Intent intent = new Intent(context, WebViewGameActivity.class);
                                 intent.putExtra("url",url);
@@ -138,34 +139,34 @@ public class TgaSdk {
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent);
                             }else {
+                                Log.e(TGA,"用户信息不为空");
                                 Gson gson = new Gson();
                                 TgaSdkUserInFo userInFo = gson.fromJson(userInfo, TgaSdkUserInFo.class);
-                                if (TgaSdk.gameCentreUrl!=null&&!TgaSdk.gameCentreUrl.equals("")){
-                                    if (schemeQuery!=null&&!schemeQuery.equals("")){
-                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
-                                    }else {
-
-                                        url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
-                                    }
-                                    Intent intent = new Intent(context, WebViewGameActivity.class);
-                                    intent.putExtra("url",url);
-                                    intent.putExtra("gopag",0);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    context.startActivity(intent);
-                                }else {
-                                    Log.e("初始化","isSuccess==0");
-                                    initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
+                                Log.e(TGA,"游戏中心列表="+TgaSdk.gameCentreUrl);
+                                if (TgaSdk.gameCentreUrl==null||TgaSdk.gameCentreUrl.equals("")){
+                                    TgaSdk.gameCentreUrl= Global.TEST_MOREN;
                                 }
+                                if (schemeQuery!=null&&!schemeQuery.equals("")){
+                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                }else {
+
+                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+urlEncode(userInFo.getNickname())+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                }
+                                Intent intent = new Intent(context, WebViewGameActivity.class);
+                                intent.putExtra("url",url);
+                                intent.putExtra("gopag",0);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
                             }
 
                             return;
                       }else {
-                            Log.e("初始化","TgaSdk.listener=null");
+                            Log.e(TGA,"TgaSdk.listener=null");
                             initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
                             return;
                         }
                     }else {
-                        Log.e("初始化","TgaSdk.listener=null");
+                        Log.e(TGA,"初始化.isSuccess=0");
                         initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
                         return;
                     }
