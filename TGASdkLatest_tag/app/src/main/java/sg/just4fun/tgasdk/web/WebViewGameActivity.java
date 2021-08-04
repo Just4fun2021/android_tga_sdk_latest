@@ -136,7 +136,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
             }
             upWebview(gopag,"",add_view);
         }else {
-                relayout.setVisibility(View.GONE);
+            relayout.setVisibility(View.GONE);
             int change = SpUtils.getInt(this, "change", -1);
             if (change==1){
                 String string = SpUtils.getString(this, "changelang", "");
@@ -423,14 +423,9 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         super.onBackPressed();
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       if(add_view!=null){
-           add_view.stopLoading();
-           add_view.removeAllViews();
-           add_view.destroy();
-           add_view = null;
-       }
     }
 }

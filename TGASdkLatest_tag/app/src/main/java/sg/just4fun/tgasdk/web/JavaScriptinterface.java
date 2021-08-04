@@ -404,6 +404,10 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
          context.finish(); //返回键点击
         Log.e("finishPage","关闭");
          GoogleBillingUtil.cleanListener();
+        webview.stopLoading();
+        webview.removeAllViews();
+        webview.destroy();
+        webview = null;
     }
     @JavascriptInterface
     public void getPayAppid(String uuid,  String options) {
@@ -604,17 +608,11 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
             if (list.size()>0){
                 String price1 = list.get(0).getPrice();
                 String number = getNumber(price1);
-//            int length = split[1].length();
-
-                Log.e("googlePayWay","number="+number+" number.length()"+number.length());
-
-                String xsStr = number.substring(number.indexOf("."));
-
-                int i = xsStr.length() - 1;
-                String replace = xsStr.replace(".", "");
+                String[] split = number.split("\\.");
+                int i = split[1].length();
+                String replace = number.replace("\\.", "");
                 long pow = (long) Math.pow(10, i);
-                String replace1 = number.replace(xsStr, "");
-                long i1 = Long.parseLong(replace1)*pow+Long.parseLong(replace);
+                double i1 =Double.parseDouble(replace)*pow;
                 String replace2 = price1.replace(number, "");
                 try {
                     EncryptStrBean.PriceBean priceBean = new EncryptStrBean.PriceBean(String.valueOf(i1) , String.valueOf(pow), replace2);
