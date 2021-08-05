@@ -98,6 +98,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
 //        banner_web = findViewById(R.id.banner_web);
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
+
         gopag = intent.getIntExtra("gopag", -1);
         statusaBar = intent.getBooleanExtra("statusaBar",true);
         navigationBar = intent.getBooleanExtra("navigationBar",true);
@@ -256,7 +257,6 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                             Log.e(TGA,"地址"+url);
                             webView.loadUrl(url);
                             webView.setWebViewClient(new WebViewClient() {
-
                                 @Override
                                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                                     super.onPageStarted(view, url, favicon);
@@ -426,6 +426,9 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
 
     @Override
     protected void onDestroy() {
+//        add_view.stopLoading();
+//        add_view.destroy();
+//        add_view = null;
         super.onDestroy();
     }
 }

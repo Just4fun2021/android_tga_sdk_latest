@@ -401,13 +401,10 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void finishPage(String uuid,  String options) {
-         context.finish(); //返回键点击
-        Log.e("finishPage","关闭");
-         GoogleBillingUtil.cleanListener();
-        webview.stopLoading();
-        webview.removeAllViews();
-        webview.destroy();
-        webview = null;
+        Log.e("goPage","关闭");
+        GoogleBillingUtil.cleanListener();
+        context.finish(); //返回键点击
+
     }
     @JavascriptInterface
     public void getPayAppid(String uuid,  String options) {
