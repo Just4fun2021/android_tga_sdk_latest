@@ -25,11 +25,12 @@ import sg.just4fun.tgasdk.web.WebViewGameActivity;
 public class GoPageUtils {
     private static String uuid;
     private static WebView tgawebView;
-    private static Map<Integer, GoPageInfo> caches = new ConcurrentHashMap<>();
+    public static Map<Integer, GoPageInfo> caches = new ConcurrentHashMap<>();
     private static Activity context;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void  jumpGame(int page,WebView tgawebView,Activity context, String uuid, String options) {
+        Log.e("finishActivityEvents","jumpGamepage="+page);
         GoPageUtils.tgawebView=tgawebView;
         GoPageUtils.uuid=uuid;
         GoPageUtils.context=context;
@@ -48,12 +49,14 @@ public class GoPageUtils {
             intent.putExtra("statusaBarColor",statusBarDisplay.getBackgroundColor());
             intent.putExtra("navigationBar",navigationBar.isDisplay());
             intent.putExtra("backgroundColor",navigationBar.getBackgroundColor());
+            intent.putExtra("yssdk",1);
             context.startActivity(intent);
         }else {
             Intent intent = new Intent(context, WebViewGameActivity.class);
             intent.putExtra("url",options);
             intent.putExtra("uuid",uuid);
             intent.putExtra("gopag",1);
+            intent.putExtra("yssdk",0);
             context.startActivity(intent);
         }
             try {
@@ -75,7 +78,9 @@ public class GoPageUtils {
     }
 
     public static void finishActivityEvents(WebView webView) {
+//        Log.e("finishActivityEvents","page="+page);
         for (int page : caches.keySet()) {
+            Log.e("finishActivityEvents","page="+caches.keySet());
             try {
                 GoPageInfo goPageInfo = caches.remove(page);
                 LinkedList<String> info = goPageInfo.getInfo();
@@ -101,7 +106,7 @@ public class GoPageUtils {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void run() {
-            Log.d("执行了回调", "JSON="+scriptCode +" run on " +
+            Log.d("goPage执行了回调", "JSON="+scriptCode +" run on " +
                         webView.getUrl());
                 webView.evaluateJavascript(scriptCode, null);
         }

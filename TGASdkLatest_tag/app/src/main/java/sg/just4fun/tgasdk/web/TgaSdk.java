@@ -35,7 +35,9 @@ import sg.just4fun.tgasdk.tga.base.HttpBaseResult;
 import sg.just4fun.tgasdk.tga.base.JsonCallback;
 import sg.just4fun.tgasdk.tga.global.AppUrl;
 import sg.just4fun.tgasdk.tga.global.Global;
+import sg.just4fun.tgasdk.tga.ui.home.HomeActivity;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
+import sg.just4fun.tgasdk.tga.utils.SpUtils;
 
 public class TgaSdk {
     public static Context mContext;
@@ -123,6 +125,7 @@ public class TgaSdk {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String yhAppId = SpUtils.getString(mContext, "yhAppId", "");
                 if (url==null||url.equals("")){
                     String version = Conctant.getVersion(mContext);
                     if (isSuccess==1){
@@ -133,8 +136,8 @@ public class TgaSdk {
                             String userInfo = TgaSdk.listener.getUserInfo();
                             if(userInfo==null||userInfo.equals("")){
                                 Log.e(TGA,"用户信息为空");
-                                url= TgaSdk.gameCentreUrl+"?appId="+ TgaSdk.appId;//无底部
-                                Intent intent = new Intent(context, WebViewGameActivity.class);
+                                url= TgaSdk.gameCentreUrl+"?appId="+ yhAppId;//无底部
+                                Intent intent = new Intent(context, HomeActivity.class);
                                 intent.putExtra("url",url);
                                 intent.putExtra("gopag",0);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -148,12 +151,12 @@ public class TgaSdk {
                                     TgaSdk.gameCentreUrl= Global.TEST_MOREN;
                                 }
                                 if (schemeQuery!=null&&!schemeQuery.equals("")){
-                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ yhAppId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
                                 }else {
 
-                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ yhAppId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
                                 }
-                                Intent intent = new Intent(context, WebViewGameActivity.class);
+                                Intent intent = new Intent(context, HomeActivity.class);
                                 intent.putExtra("url",url);
                                 intent.putExtra("gopag",0);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -171,7 +174,7 @@ public class TgaSdk {
                         return;
                     }
                 }
-                Intent intent = new Intent(context, WebViewGameActivity.class);
+                Intent intent = new Intent(context, HomeActivity.class);
                 intent.putExtra("url",url);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
@@ -322,7 +325,10 @@ public class TgaSdk {
                                     }else {
                                         gameCentreUrl= Global.TEST_MOREN;
                                     }
-                                    getGooglePayInfo(TgaSdk.appId);
+
+                                    SpUtils.putString(mContext,"yhAppId",appId);
+
+                                    getGooglePayInfo(appId);
                                     Log.e("tgasdk", "ad配置表==" + applovnIdConfig);
                                 }else {
                                     Log.e(TGA,"包名不一致=");

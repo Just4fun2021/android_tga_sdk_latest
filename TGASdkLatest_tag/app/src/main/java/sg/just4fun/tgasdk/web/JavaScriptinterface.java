@@ -394,8 +394,8 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @JavascriptInterface
     public void goPage(String uuid,  String options) {
-        Log.e("goPage","goPage"+options);
         pageId++;
+        Log.e("goPage","goPage"+options+" uuid="+uuid+" pageId="+pageId);
         GoPageUtils.jumpGame(pageId,webview,context,uuid,options);
     }
 
@@ -404,7 +404,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
         Log.e("goPage","关闭");
         GoogleBillingUtil.cleanListener();
         context.finish(); //返回键点击
-
     }
     @JavascriptInterface
     public void getPayAppid(String uuid,  String options) {
@@ -871,7 +870,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     @Override
                     public void onSuccess(Response<HttpBaseResult<GooglePayInfoBean>> response) {
                         if (response.body().getStateCode() == 1) {
-
                             infoList = response.body().getResultInfo().getData();
                             if (infoList.size()==0){
                                 Log.e("googlePayWay","googlepay配置表商品为0");
@@ -888,8 +886,10 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     @Override
                     public void onError(Response<HttpBaseResult<GooglePayInfoBean>> response) {
                         Log.e("googlePayWay","获取配置表商品失败"+response.getException().toString());
+
                     }
                 });
+
     }
 
 
