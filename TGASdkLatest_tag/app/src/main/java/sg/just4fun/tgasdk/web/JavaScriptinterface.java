@@ -334,12 +334,12 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     @JavascriptInterface
     public void HorizontalScreen(String uuid, String options) {
         Log.e("HorizontalScreen","横屏options="+options);
+        context.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         WebViewGameActivity.tv_stuasbar.setVisibility(View.GONE);
         WindowManager.LayoutParams lp = context.getWindow().getAttributes();
         lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         context.getWindow().setAttributes(lp);
         context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        context.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     //    切换竖屏
@@ -347,6 +347,8 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     public void VerticalScreen(String uuid, String options) {
         Log.e("VerticalScreen","竖屏options="+options);
         context.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //切换竖屏
+
+
     }
 
 

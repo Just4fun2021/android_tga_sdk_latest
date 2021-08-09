@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -32,6 +34,8 @@ import com.smarx.notchlib.NotchScreenManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Locale;
 
@@ -233,12 +237,6 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                 .into(img_loading);
         rl_loading.setVisibility(View.VISIBLE);
         if (TgaSdk.listener != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
                             String info = TgaSdk.listener.getUserInfo();
                             SpUtils.putString(HomeActivity.this, "userInfo", info);
                             TgaSdkUserInFo userInFo = new TgaSdkUserInFo();
@@ -257,82 +255,61 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                             initWebView(add_view);
                             Log.e(TGA, "地址" + url);
                             webView.loadUrl(url);
-                            webView.setWebViewClient(new WebViewClient() {
-                                @Override
-                                public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                                    super.onPageStarted(view, url, favicon);
-                                    rl_loading.setVisibility(View.GONE);
-
-                                    Log.e(TGA, "onPageStarted=" + url);
-                                    if (!url.startsWith(url) && !url.contains("paypal")) {
-//                    alertDialog.show();
-//                    alertDialog.getWindow().setBackgroundDrawableResource(R.color.translucent_background);
-//                    alertDialog.getWindow().setLayout(ScreenUtils.getScreenWidth(HomeActivity.this), ScreenUtils.getScreenHeight(HomeActivity.this));
-                                    }
-                                }
-
-                                @Override
-                                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                                    Log.e("执行", "shouldOverrideUrlLoading=" + url);
-                                    //                if (Uri.parse(url).getHost().equals("data.just4fun.sg")) {
-                                    return false;
-                                }
-
-                                @Override
-                                public void onPageFinished(WebView webView, String url) {
-                                    super.onPageFinished(webView, url);
-                                    Log.e("执行", "onPageFinished=" + url);
-                                    Log.d("TGA_URL", "url fininshed : " + url + ", webview.orgurl=" + webView.getOriginalUrl() + ", webview.url = " + webView.getUrl());
-                                }
-                            });
-
-                            webView.setWebChromeClient(new WebChromeClient() {
-                                                           @Override
-                                                           public void onCloseWindow(WebView window) {
-                                                               super.onCloseWindow(window);
-                                                               if (newWebView != null) {
-
-
-                                                               }
-                                                           }
-
-                                                           @Override
-                                                           public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, Message resultMsg) {
-
-                                                               Log.e("webviewOpen", "onCreateWindow=");
-                                                               if (newWebView == null) {
-
-                                                                   newWebView = new LollipopFixedWebView(HomeActivity.this);//新创建一个webview
-                                                               }
-
-                                                               initWebView(newWebView);//初始化webview
-
-                                                               WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;//以下的操作应该就是让新的webview去加载对应的url等操作。
-
-                                                               transport.setWebView(newWebView);
-
-                                                               resultMsg.sendToTarget();
-
-                                                               return true;
-                                                           }
-
-
-                                                           @Override
-                                                           public void onReceivedTitle(WebView view, String title) {
-                                                               super.onReceivedTitle(view, title);
-                                                               //title就是网页的title
-                                                               tv_webtitle.setText(title);
-                                                           }
-                                                       }
-
-                            );
-
-
-                        }
-                    });
-
+            add_view.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
                 }
-            }).start();
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    Uri uri = Uri.parse(url);
+                    Log.e("地址","h5页面="+url);
+                    String shareParam = uri.getQueryParameter("tgashare");
+                    if (!TextUtils.isEmpty(shareParam)) {
+                        try {
+                            shareParam = URLDecoder.decode(shareParam, "UTF-8");
+                            shareParam = URLDecoder.decode(shareParam, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        Uri shareUri = Uri.parse("http://www.test.com?" + shareParam);
+                    /*
+                    Log.d("TGA_URL", shareUri.toString());
+                    Log.d("=share=", "=title==" + shareUri.getQueryParameter("title"));
+                    Log.d("=share=", "=url==" + shareUri.getQueryParameter("url"));
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, shareUri.getQueryParameter("title") + " " + shareUri.getQueryParameter("url"));
+                    //UserAgreementActivity.this.startActivity(Intent.createChooser(intent, ""));
+                    startActivity(intent);*/
+//                    shareFaceBook(shareUri.getQueryParameter("url"));
+                        return true;
+                    } else if (!TextUtils.isEmpty(uri.toString())) {
+                        Log.d("TGA_URL", uri.toString());
+                        add_view.loadUrl(uri.toString());
+                        return false;
+                    }
+                    return false;
+                }
+
+                @Override
+                public void onPageFinished(WebView webView, String url) {
+                    super.onPageFinished(webView, url);
+                    rl_loading.setVisibility(View.GONE);
+                    Log.e("地址", "加载h5页面结束" + url + ", webview.orgurl=" + webView.getOriginalUrl() +", webview.url = " + webView.getUrl());
+                }
+/*@Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                alertDialog.dismiss();
+            }*/
+
+            });
+
+
+
+
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {////h5谷歌调试
                 add_view.setWebContentsDebuggingEnabled(true);
             }

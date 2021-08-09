@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -87,6 +88,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view_game);
+
         NotchScreenManager.getInstance().setDisplayInNotch(WebViewGameActivity.this);
         SdkActivityDele.addActivity(WebViewGameActivity.this);
         img_loading = findViewById(R.id.img_loading);
@@ -280,6 +282,8 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                                     Log.e("执行","shouldOverrideUrlLoading="+url);
                                     //                if (Uri.parse(url).getHost().equals("data.just4fun.sg")) {
+                                    Uri uri = Uri.parse(url);
+                                    add_view.loadUrl(uri.toString());
                                     return false;
                                 }
 
@@ -411,7 +415,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
             Log.e(TGA,"第二次isFrist="+isFrist);
             TgaAdSdkUtils.flushAllEvents(this.add_view);
             Log.e(TGA,"第二次add_view="+ add_view.getUrl());
-            GoPageUtils.finishActivityEvents(add_view);
+//            GoPageUtils.finishActivityEvents(add_view);
         }
     }
 
