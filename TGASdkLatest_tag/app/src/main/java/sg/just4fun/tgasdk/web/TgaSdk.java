@@ -1,6 +1,4 @@
 package sg.just4fun.tgasdk.web;
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -38,7 +36,7 @@ import sg.just4fun.tgasdk.tga.global.Global;
 import sg.just4fun.tgasdk.tga.ui.home.HomeActivity;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
 import sg.just4fun.tgasdk.tga.utils.SpUtils;
-
+//TGASDK初始化类
 public class TgaSdk {
     public static Context mContext;
     public static  TGACallback.TgaEventListener listener;
@@ -69,8 +67,7 @@ public class TgaSdk {
             return text;
         }
     }
-
-
+//TGASDK初始化方法
     public static void init(Context context,String appKey,String schemeUrl,String appPaymentKey,TGACallback.TgaEventListener listener,TGACallback.initCallback initCallback) {
         mContext = context.getApplicationContext();
         TgaSdk.appKey= appKey;
@@ -84,8 +81,7 @@ public class TgaSdk {
 //       获取用户配置表
         getUserInfo(appKey);
     }
-
-
+// TGASDK拉取google支付配置
     private static void getGooglePayInfo(String appId) {
         JSONObject jsonObject = new JSONObject();
         String data = "{}";
@@ -120,12 +116,12 @@ public class TgaSdk {
         return mContext;
     }
 
+    //进入TGAsdk游戏中心方法
     public static void goPage(Context context,final String url,boolean autoToken,String schemeQuery) {
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String yhAppId = SpUtils.getString(mContext, "yhAppId", "");
+//                String yhAppId = SpUtils.getString(mContext, "yhAppId", "");
                 if (url==null||url.equals("")){
                     String version = Conctant.getVersion(mContext);
                     if (isSuccess==1){
@@ -136,12 +132,14 @@ public class TgaSdk {
                             String userInfo = TgaSdk.listener.getUserInfo();
                             if(userInfo==null||userInfo.equals("")){
                                 Log.e(TGA,"用户信息为空");
-                                url= TgaSdk.gameCentreUrl+"?appId="+ yhAppId;//无底部
-                                Intent intent = new Intent(context, HomeActivity.class);
-                                intent.putExtra("url",url);
-                                intent.putExtra("gopag",0);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(intent);
+                                    url= TgaSdk.gameCentreUrl+"?appId="+ TgaSdk.appId;//无底部
+                                    Intent intent = new Intent(context, HomeActivity.class);
+                                    intent.putExtra("url",url);
+                                    intent.putExtra("gopag",0);
+                                    intent.putExtra("yssdk",0);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(intent);
+
                             }else {
                                 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
                                 TgaSdkUserInFo userInFo = gson.fromJson(userInfo, TgaSdkUserInFo.class);
@@ -151,18 +149,19 @@ public class TgaSdk {
                                     TgaSdk.gameCentreUrl= Global.TEST_MOREN;
                                 }
                                 if (schemeQuery!=null&&!schemeQuery.equals("")){
-                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ yhAppId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
                                 }else {
 
-                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ yhAppId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
                                 }
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 intent.putExtra("url",url);
                                 intent.putExtra("gopag",0);
+                                intent.putExtra("yssdk",0);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent);
+                                return;
                             }
-                            return;
                       }else {
                             Log.e(TGA,"TgaSdk.listener=null");
                             initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
@@ -176,6 +175,7 @@ public class TgaSdk {
                 }
                 Intent intent = new Intent(context, HomeActivity.class);
                 intent.putExtra("url",url);
+                intent.putExtra("yssdk",0);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -243,7 +243,7 @@ public class TgaSdk {
         }
         return value;
     }
-
+//拉取SDK配置表
     public static void getUserInfo(String appKe){
         JSONObject jsonObject = new JSONObject();
         String data = "{}";
@@ -262,7 +262,6 @@ public class TgaSdk {
             @Override
             public void onSuccess(Response response) {
                 String s1 = response.body().toString();
-//                s1="{\"stateCode\":1,\"resultInfo\":{\"appConfig\":\"{\\\"ad\\\":[{\\\"moduleAppId\\\":\\\"1\\\",\\\"channelName\\\":\\\"applovin\\\",\\\"weight\\\":1,\\\"enabled\\\":true,\\\"config\\\":{\\\"interstitial\\\":\\\"25ddb36d401152a9\\\",\\\"titleAd\\\":\\\"365315c423c6a029\\\",\\\"rewardAd\\\":\\\"f200862f970382ea\\\",\\\"bannerAd\\\":\\\"97cc5a65435d808f\\\"}}]}\",\"appName\":null,\"appId\":\"3d2c434a87c94b1ebe3765c4f924c52c\",\"packageName\":\"com.aleta.pacpay\",\"iconpath\":null,\"desc\":\"SUCCESS\"}}";
                 Log.e(TGA,"初始化成功的="+s1);
                 Gson gson = new GsonBuilder()
                         .serializeNulls()
@@ -275,29 +274,17 @@ public class TgaSdk {
                         Log.e(TGA,"初始化成功的=");
                         if (listener!=null){
                             Log.e(TGA,"listener是不是空了="+gson.toJson(httpBaseResult.getResultInfo()));
-//                            String resultInfo1 = gson.toJson(response.body().getResultInfo()) ;
                             String s = gson.toJson(httpBaseResult.getResultInfo());
                             UserInFoBean resultInfo = gson.fromJson(s, UserInFoBean.class);
                             Log.e(TGA,"listener是不是空了resultInfo1"+gson.toJson(httpBaseResult.getResultInfo()));
-//                            JSONObject jsonObject1 = new JSONObject(resultInfo1);
                             String pkName = mContext.getPackageName();
-//                            if (jsonObject1.has("packageName")){
-//                                packageName = (String)jsonObject1.get("packageName");
-//                            }
                              packageName = resultInfo.getPackageName();
+                            //包名相等
+                            appId = resultInfo.getAppId();
+                            SpUtils.putString(mContext,"yhAppId",appId);
                             if (packageName !=null&&!packageName.equals("")){
-                                if (packageName.equals(pkName)){//包名相等
-                                    isSuccess=1;
-                                    initCallback.initSucceed();
-//                                    appId = (String)jsonObject1.get("appId");
-                                     appId = resultInfo.getAppId();
-//                                    if (jsonObject1.has("iconpath")){
-//                                        iconpath = (String)jsonObject1.get("iconpath");
-//                                    }
-                                     iconpath = resultInfo.getIconpath();
-//                                    if (jsonObject1.has("appConfig")){
-//                                        appConfigList = (String)jsonObject1.get("appConfig");
-//                                    }
+                                if (packageName.equals(pkName)){
+                                    iconpath = resultInfo.getIconpath();
                                     appConfigList = resultInfo.getAppConfig();
                                     if(appConfigList!=null&&!appConfigList.equals("")&&!appConfigList.equals("{}")){
                                         UserInFoBean.AppConfig adConfigBean = gson.fromJson(appConfigList, UserInFoBean.AppConfig.class);
@@ -320,16 +307,13 @@ public class TgaSdk {
                                                 Log.e("tgasdk", "ad配置表==" + applovnIdConfig);
                                             }
                                         }
-
-
                                     }else {
                                         gameCentreUrl= Global.TEST_MOREN;
                                     }
-
-                                    SpUtils.putString(mContext,"yhAppId",appId);
-
                                     getGooglePayInfo(appId);
                                     Log.e("tgasdk", "ad配置表==" + applovnIdConfig);
+                                    isSuccess=1;
+                                    initCallback.initSucceed();
                                 }else {
                                     Log.e(TGA,"包名不一致=");
                                     isSuccess=0;
@@ -365,9 +349,6 @@ public class TgaSdk {
             }
         });
     }
-
-
-
    public static void fromScheme(Uri schemeUri){
         if (schemeUri!=null||!schemeUri.equals("")){
             try{

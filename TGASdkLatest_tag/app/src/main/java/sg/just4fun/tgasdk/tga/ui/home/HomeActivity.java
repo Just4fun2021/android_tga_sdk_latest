@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
     private int change;
     private FacebookTpBean facebook;
     private int gopag;
-    private boolean statusaBar;
+    public static boolean statusaBar;
     private boolean navigationBar;
     private ImageView image_black;
     private TextView tv_webtitle;
@@ -74,6 +74,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
     private String backgroundColor;
     public static TextView tv_stuasbar;
     private String statusaBarColor;
+    private int yssdk;
 
     public static String urlEncode(String text) {
         try {
@@ -98,10 +99,10 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         relayout = findViewById(R.id.relayout);
         tv_stuasbar = findViewById(R.id.tv_stuasbar);
 
-//        banner_web = findViewById(R.id.banner_web);
+//      banner_web = findViewById(R.id.banner_web);
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
-
+        yssdk = intent.getIntExtra("yssdk",-1);
         gopag = intent.getIntExtra("gopag", -1);
         statusaBar = intent.getBooleanExtra("statusaBar", true);
         navigationBar = intent.getBooleanExtra("navigationBar", true);
@@ -112,7 +113,11 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         if (statusaBarColor != null) {
             tv_stuasbar.setBackgroundColor(Color.parseColor(statusaBarColor));
         } else {
-            statusaBarColor = "#04a7e8";
+            if (yssdk==1){
+                statusaBarColor="#04a7e8";
+            }else {
+                statusaBarColor="#23D3BE";
+            }
             tv_stuasbar.setBackgroundColor(Color.parseColor(statusaBarColor));
         }
         if (backgroundColor != null) {
@@ -122,6 +127,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
             relayout.setBackgroundColor(Color.parseColor(backgroundColor));
 
         }
+
 //状态栏显示或者掩藏
         full(statusaBar);
         image_black.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +193,6 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
             lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
             getWindow().setAttributes(lp);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
         }
 
     }
