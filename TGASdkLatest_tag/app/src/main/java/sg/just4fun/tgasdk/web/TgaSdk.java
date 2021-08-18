@@ -149,10 +149,10 @@ public class TgaSdk {
                                     TgaSdk.gameCentreUrl= Global.TEST_MOREN;
                                 }
                                 if (schemeQuery!=null&&!schemeQuery.equals("")){
-                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                    url= TgaSdk.gameCentreUrl+ "?txnId="+ userInFo.getUserId()+"&"+schemeQuery+"&appId="+ TgaSdk.appId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&avatar="+urlEncode(userInFo.getAvatar());//无底部
                                 }else {
 
-                                    url= TgaSdk.gameCentreUrl+ "?txnid="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&head="+urlEncode(userInFo.getAvatar());//无底部
+                                    url= TgaSdk.gameCentreUrl+ "?txnId="+ userInFo.getUserId()+"&appId="+ TgaSdk.appId+"&nickname="+userInFo.getNickname()+"&msisdn="+userInFo.getUserId()+"&appversion="+version+"&avatar="+urlEncode(userInFo.getAvatar());//无底部
                                 }
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 intent.putExtra("url",url);

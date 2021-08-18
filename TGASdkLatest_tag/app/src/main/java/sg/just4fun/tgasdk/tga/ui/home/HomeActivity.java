@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -404,7 +405,15 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         GoogleBillingUtil.cleanListener();
         super.onBackPressed();
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK&& add_view.canGoBack()) {
 
+            add_view.goBack();// 返回前一个页面
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onStop() {
         super.onStop();

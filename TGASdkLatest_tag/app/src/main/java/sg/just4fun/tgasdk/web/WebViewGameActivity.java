@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -57,6 +58,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
     public static boolean statusaBar;
     private static String TGA="WebViewGameActivity";
     public static LollipopFixedWebView add_view;
+    public static WindowManager.LayoutParams lp;
     private String url;
    private int isFrist=0;
     private LollipopFixedWebView newWebView;
@@ -74,6 +76,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
     public static TextView tv_stuasbar;
     private String statusaBarColor;
     private int yssdk;
+    public static RelativeLayout relayout_web;
 
     public static String urlEncode(String text) {
         try{
@@ -88,11 +91,12 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view_game);
-
         NotchScreenManager.getInstance().setDisplayInNotch(WebViewGameActivity.this);
         SdkActivityDele.addActivity(WebViewGameActivity.this);
         img_loading = findViewById(R.id.img_loading);
         rl_loading = findViewById(R.id.rl_loading);
+        relayout_web = findViewById(R.id.relayout_web);
+
         add_view = findViewById(R.id.add_view1);
         image_black = findViewById(R.id.image_black);
         tv_webtitle = findViewById(R.id.tv_webtitle);
@@ -102,7 +106,6 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
 //        banner_web = findViewById(R.id.banner_web);
         Intent intent = getIntent();
         url = intent.getStringExtra("url");
-
         gopag = intent.getIntExtra("gopag", -1);
         statusaBar = intent.getBooleanExtra("statusaBar",true);
         navigationBar = intent.getBooleanExtra("navigationBar",false);
@@ -119,7 +122,6 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
             }else {
                 statusaBarColor="#23D3BE";
             }
-
             tv_stuasbar.setBackgroundColor(Color.parseColor(statusaBarColor));
         }
         if (backgroundColor!=null){
@@ -129,8 +131,12 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
             relayout.setBackgroundColor(Color.parseColor(backgroundColor));
 
         }
-//状态栏显示或者掩藏
-        full(statusaBar);
+            if (statusaBar){
+                tv_stuasbar.setVisibility(View.VISIBLE);
+            }else {
+                tv_stuasbar.setVisibility(View.GONE);
+            }
+        full(statusaBar,this);
         image_black.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,21 +184,20 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
     public static int getStatusBarHeight(Context context) {
         return getDimensionPixel(context, "status_bar_height");
     }
-    private void full(boolean enable) {
+    public static void full(boolean enable,Activity context) {
+        Log.e(TGA,"掩藏显示"+enable);
         if (enable) {//显示
-            tv_stuasbar.setVisibility(View.VISIBLE);
-            WindowManager.LayoutParams attr = getWindow().getAttributes();
+            WindowManager.LayoutParams attr = context.getWindow().getAttributes();
             attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            getWindow().setAttributes(attr);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            transparencyBar(WebViewGameActivity.this);
+            context.getWindow().setAttributes(attr);
+            context.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            transparencyBar(context);
         } else {//掩藏
-            tv_stuasbar.setVisibility(View.GONE);
-            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            Log.e(TGA,"掩藏代码执行了"+enable);
+            lp =context.getWindow().getAttributes();
             lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            getWindow().setAttributes(lp);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
+            context. getWindow().setAttributes(lp);
+            context.  getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
     }
@@ -235,7 +240,6 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         super.onActivityResult(requestCode, resultCode, data);
         FacebookTpBean.callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
     private void upWebview(int pag,String lang, WebView webView) {
         Glide.with(WebViewGameActivity.this).load(R.mipmap.gif)
                 .into(img_loading);
