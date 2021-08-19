@@ -3,6 +3,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,6 +11,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.adapter.Call;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.PostRequest;
 
@@ -96,7 +98,7 @@ public class TgaSdk {
         OkGo.<HttpBaseResult<GooglePayInfoBean>>post(AppUrl.GET_GOOGLEPAY_INFO)
                 .tag(mContext)
                 .upRequestBody(body)
-                .execute(new JsonCallback<HttpBaseResult<GooglePayInfoBean>>() {
+                .execute(new JsonCallback<HttpBaseResult<GooglePayInfoBean>>(mContext) {
                     @Override
                     public void onSuccess(Response<HttpBaseResult<GooglePayInfoBean>> response) {
                         if (response.body().getStateCode() == 1) {
@@ -255,10 +257,10 @@ public class TgaSdk {
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-        PostRequest post = OkGo.post(AppUrl.TGA_SDK_INFO);
-        post.tag(mContext);
-        post.upRequestBody(body);
-        post.execute(new JsonCallback<String>() {
+        OkGo.<String>post(AppUrl.TGA_SDK_INFO)
+        .tag(mContext)
+        .upRequestBody(body)
+        .execute(new JsonCallback<String>(mContext) {
             @Override
             public void onSuccess(Response response) {
                 String s1 = response.body().toString();
