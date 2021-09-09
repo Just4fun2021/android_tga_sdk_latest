@@ -108,6 +108,9 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     private int isscu=0;
     private int cishu=5;
     private String metaDataStringApplication1;
+    private OrientationEventListener mOrientationListener;
+    private String TAG="JavaScriptinterface";
+
     //    public static WebView webView;
     public JavaScriptinterface(Activity context, String tgaUrl){
         this.context= context;
@@ -343,7 +346,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     @JavascriptInterface
     public void HorizontalScreen(String uuid, String options) {
         Log.e("HorizontalScreen","横屏options="+options);
-        context.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        context.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         runOnUiThread(new Runnable() {
             public void run() {
                 WebViewGameActivity.full(false,context);
@@ -583,12 +586,9 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
         Log.d("javascriptInterface", "tryFlushEvents " + uuid + " " + options);
         TgaAdSdkUtils.flushAllEvents(webview);
     }
-
 //        public void onEvent(String event, JSONObject params) {
 //        webview.evaluateJavascript("tgasdk.nativeEvent(\"" +event + "\", " + params.toString(), null);
 //    }
-
-
     public void googlePayWaypay(String id){
         Log.e("googlePayWay","进来了"+id);
         googleBillingUtil = GoogleBillingUtil.getInstance(id)
@@ -597,7 +597,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 .setOnStartSetupFinishedListener(mOnStartSetupFinishedListener)
                 .build(context);
         googleBillingUtil.setIsAutoConsumeAsync(true);
-
     }
 
     //查询商品信息回调接口
@@ -623,7 +622,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     EncryptStrBean.PriceBean priceBean = new EncryptStrBean.PriceBean(String.valueOf(i1) , String.valueOf(pow), replace2);
                     price = priceBean.toJson().toString();
                     Log.e("googlePayWay","得到值price1="+list.get(0).toString());
-
                 } catch (Exception e) {
                     Log.e("googlePayWay","访问服务端="+e.getMessage());
                     e.printStackTrace();
@@ -635,9 +633,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 try {
                     String encryptStr1 = encryptStrBean.toJson().toString();
                     String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
-
                     googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
-
                 } catch (Exception e) {
                     Log.e("googlePayWay","访问服务端="+e.getMessage());
                     e.printStackTrace();
@@ -656,14 +652,11 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                 String encryptStr1 = encryptStrBean.toJson().toString();
                 String encryptStr = DesEncryptUtils.encrypt(encryptStr1, TgaSdk.appPaymentKey);
                 googlePayResult(TgaSdk.appId,context,"",encryptStr,"inapp",TgaSdk.appId,0);
-
             } catch (Exception e) {
                 Log.e("googlePayWay","访问服务端="+e.getMessage());
                 e.printStackTrace();
             }
-
         }
-
         @Override
         public void onQueryError() {
             //查询错误

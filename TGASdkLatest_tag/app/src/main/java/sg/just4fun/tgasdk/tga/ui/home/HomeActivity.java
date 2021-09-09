@@ -1,6 +1,7 @@
 package sg.just4fun.tgasdk.tga.ui.home;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -30,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.h5.H5AdsWebViewClient;
 import com.smarx.notchlib.NotchScreenManager;
 
 import org.json.JSONException;
@@ -76,6 +78,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
     public static TextView tv_stuasbar;
     private String statusaBarColor;
     private int yssdk;
+    private H5AdsWebViewClient h5AdsWebViewClient;
 
     public static String urlEncode(String text) {
         try {
@@ -85,6 +88,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint({"WrongViewCast", "ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,6 +242,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         FacebookTpBean.callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void upWebview(int pag, String lang, WebView webView) {
         Glide.with(HomeActivity.this).load(R.mipmap.gif)
                 .into(img_loading);
@@ -258,7 +263,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                                 url = url + "&lang=" + lang;
                             }
                             Log.e(TGA, "lang=" + lang + "   url=" + url);
-                            initWebView(add_view);
+                            initWebView(webView);
                             Log.e(TGA, "地址" + url);
                             webView.loadUrl(url);
             add_view.setWebViewClient(new WebViewClient() {
@@ -313,8 +318,12 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
             });
 
 
-
-
+//google ads
+//            h5AdsWebViewClient = new H5AdsWebViewClient(this, webView);
+//            webView.setWebViewClient(h5AdsWebViewClient);
+//
+//            WebViewClient pubWebViewClient=new WebViewClient();
+//            h5AdsWebViewClient.setDelegateWebViewClient(pubWebViewClient);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {////h5谷歌调试
                 add_view.setWebContentsDebuggingEnabled(true);
@@ -360,6 +369,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         super.onStart();
         isFrist++;
         TGACallback.setLangCallback(new TGACallback.LangCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void getLang(String lang) {
                 if (!lang.equals("")) {
