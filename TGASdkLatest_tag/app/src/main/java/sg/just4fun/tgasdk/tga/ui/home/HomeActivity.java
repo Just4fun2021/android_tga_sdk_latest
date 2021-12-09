@@ -425,10 +425,10 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
     public void onBackPressed() {
         Log.e(TGA, "onBackPressed");
         GoogleBillingUtil.cleanListener();
-        if(TgaSdk.gameCenterCallback!=null){
-
-            TgaSdk.gameCenterCallback.onGameCenterClosed();
-        }
+//        if(TgaSdk.gameCenterCallback!=null){
+//
+//            TgaSdk.gameCenterCallback.onGameCenterClosed();
+//        }
         super.onBackPressed();
     }
     @Override
@@ -443,14 +443,19 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
     @Override
     protected void onStop() {
         super.onStop();
-        if(TgaSdk.gameCenterCallback!=null){
 
-            TgaSdk.gameCenterCallback.onGameCenterClosed();
-        }
     }
 
     @Override
     protected void onDestroy() {
+        if(TgaSdk.gameCenterCallback!=null){
+
+            TgaSdk.gameCenterCallback.onGameCenterClosed();
+        }else {
+            Log.e("gameCenterCallback=空了","gameCenterCallback=空了");
+        }
+
+
         if (add_view != null) {
             add_view.stopLoading();
             add_view.removeAllViews();

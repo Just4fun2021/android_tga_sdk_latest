@@ -442,7 +442,8 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
             Log.e("googlePayWay","商品id="+googlePayWayInFo.getId());
              orderId = googlePayWayInFo.getOrder();
              Log.e("googlePayWay","orderId="+orderId);
-            if (googlePayWayInFo.getPayType().equals("googlePay")){
+            String s = googlePayWayInFo.getPayType().toLowerCase();
+            if (s.equals("googlepay")){
                 if(TgaSdk.infoList!=null&&TgaSdk.infoList.size()>0){
                     for (int a=0;a<TgaSdk.infoList.size();a++){
                         GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
