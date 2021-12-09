@@ -351,10 +351,11 @@ public class TgaSdk {
         return mContext;
     }
     //进入TGAsdk游戏中心方法
-    public static void goPage(Context context,final String url,boolean autoToken,String schemeQuery,boolean navigationbar) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+    public static void goPage(Context context, String url, boolean autoToken, String schemeQuery, boolean navigationbar) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
 //                String yhAppId = SpUtils.getString(mContext, "yhAppId", "");
                 String bipHeader = SpUtils.getString(mContext, "bipHeader", "");
                 String bipName = SpUtils.getString(mContext, "bipName", "");
@@ -367,7 +368,7 @@ public class TgaSdk {
                         Log.e(TGA,"isSuccess==1");
                         if (TgaSdk.listener!=null){
                             Log.e(TGA,"TgaSdk.listener不为空");
-                            String url="";
+
                             String userInfo = TgaSdk.listener.getAuthCode();
                             if(bipToken==null||bipToken.equals("")){
                                     Log.e(TGA,"bipToken="+bipToken);
@@ -417,8 +418,8 @@ public class TgaSdk {
                 intent.putExtra("yssdk",0);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-            }
-        }).start();
+//            }
+//        }).start();
 
     }
     public static String buildUserInfo(String userId, String nickName, String headImg) {
