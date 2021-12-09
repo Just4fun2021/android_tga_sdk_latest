@@ -444,7 +444,7 @@ public class TgaSdk {
        goPage(context, url, true,gameid,navigationbar);
     }
     //跳转游戏中心
-    public static void goPage(Context context, boolean navigationbar, TGACallback.GameCenterCallback gameCenterCallback) {
+    public static void openGameCenter(Context context, boolean navigationbar, TGACallback.GameCenterCallback gameCenterCallback) {
         TgaSdk.gameCenterCallback=gameCenterCallback;
         goPage(context, "",true,"",navigationbar);
     }
@@ -461,10 +461,10 @@ public class TgaSdk {
     public static void shared(String uuid, boolean success) {
         TGACallback.listener.shareCall(uuid, success);
     }
-    public static void getCode(String uuid,String code) {
+    public static void onUserLogined(String uuid,String code) {
         TGACallback.codeCallback.codeCall(uuid,code);
     }
-    public static void outLogin() {
+    public static void onLogout() {
         TGACallback.outLoginCallback.outLoginCall();
     }
 
