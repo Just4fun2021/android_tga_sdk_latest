@@ -460,18 +460,29 @@ public class TgaSdk {
         shared(uuid, false);
     }
     public static void shared(String uuid, boolean success) {
-        TGACallback.listener.shareCall(uuid, success);
+        if (TGACallback.listener!=null){
+            TGACallback.listener.shareCall(uuid, success);
+        }
     }
     public static void onUserLogined(String uuid,String code) {
-        TGACallback.codeCallback.codeCall(uuid,code);
+        if (TGACallback.codeCallback!=null){
+
+            TGACallback.codeCallback.codeCall(uuid,code);
+        }
     }
     public static void onLogout() {
-        TGACallback.outLoginCallback.outLoginCall();
+        if(TGACallback.outLoginCallback!=null){
+            TGACallback.outLoginCallback.outLoginCall();
+        }
+
+
     }
 
 
     public static void lang(String lang) {
-        TGACallback.langListener.getLang(lang);
+        if (TGACallback.langListener!=null){
+            TGACallback.langListener.getLang(lang);
+        }
     }
 
 
