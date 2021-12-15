@@ -278,7 +278,7 @@ public class TgaSdk {
         bipUserid =String.valueOf(response.body().getResultInfo().getUser().getId()) ;
         bipToken = response.body().getResultInfo().getAccessToken();
         rebipToken = response.body().getResultInfo().getRefreshToken();
-        Log.e("rebipToken没有","rebipToken=="+rebipToken);
+        Log.e("rebipToken没有","rebipToken=="+rebipToken+" bipToken="+bipToken);
        BipGameUserUser user = response.body().getResultInfo().getUser();
         SpUtils.putString(mContext,"bipHeader",user.getHeader());
         SpUtils.putString(mContext,"bipName",user.getName());
@@ -368,11 +368,10 @@ public class TgaSdk {
                         Log.e(TGA,"isSuccess==1");
                         if (TgaSdk.listener!=null){
                             Log.e(TGA,"TgaSdk.listener不为空");
-
                             String userInfo = TgaSdk.listener.getAuthCode();
                             if(bipToken==null||bipToken.equals("")){
                                     Log.e(TGA,"bipToken="+bipToken);
-//                                "&txnId=1&msisdn=1"+
+//                                  "&txnId=1&msisdn=1"+
                                     url= TgaSdk.gameCentreUrl+"?appId="+TgaSdk.appId+"&navigationbar="+navigationbar+"&token="+bipToken+"&refresh-token="+reBipToken;//无底部
                                     Intent intent = new Intent(context, HomeActivity.class);
                                     intent.putExtra("url",url);

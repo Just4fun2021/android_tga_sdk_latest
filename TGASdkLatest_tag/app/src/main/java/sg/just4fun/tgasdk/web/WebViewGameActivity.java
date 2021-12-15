@@ -50,9 +50,11 @@ import sg.just4fun.tgasdk.adsdk.TgaAdSdkUtils;
 import sg.just4fun.tgasdk.callback.TGACallback;
 import sg.just4fun.tgasdk.conctart.SdkActivityDele;
 import sg.just4fun.tgasdk.modle.BipGameUserInfo;
+import sg.just4fun.tgasdk.modle.BipGameUserUser;
 import sg.just4fun.tgasdk.tga.base.HttpBaseResult;
 import sg.just4fun.tgasdk.tga.base.JsonCallback;
 import sg.just4fun.tgasdk.tga.global.AppUrl;
+import sg.just4fun.tgasdk.tga.ui.home.HomeActivity;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
 import sg.just4fun.tgasdk.tga.utils.SpUtils;
 import sg.just4fun.tgasdk.tpsdk.facebook.FacebookTpBean;
@@ -493,6 +495,13 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                             BipGameUserInfo resultInfo = response.body().getResultInfo();
                             LoginUtils.codeEvents(add_view,uuid,true,resultInfo.getAccessToken(),resultInfo.getRefreshToken());
                             Log.e(TGA,"获取1v1游戏列表token"+response.body().getResultInfo().getAccessToken());
+                            BipGameUserUser user = response.body().getResultInfo().getUser();
+                            SpUtils.putString(WebViewGameActivity.this,"bipHeader",user.getHeader());
+                            SpUtils.putString(WebViewGameActivity.this,"bipName",user.getName());
+                            SpUtils.putString(WebViewGameActivity.this,"bipTxnId",user.getTxnId());
+                            SpUtils.putString(WebViewGameActivity.this,"bipToken", response.body().getResultInfo().getAccessToken());
+                            SpUtils.putString(WebViewGameActivity.this,"bipUserId",String.valueOf(response.body().getResultInfo().getUser().getId()));
+                            SpUtils.putString(WebViewGameActivity.this,"reBipToken",String.valueOf(response.body().getResultInfo().getRefreshToken()));
                         }
                     }
 

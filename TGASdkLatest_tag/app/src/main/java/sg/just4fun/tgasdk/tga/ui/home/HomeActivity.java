@@ -51,6 +51,7 @@ import sg.just4fun.tgasdk.adsdk.TgaAdSdkUtils;
 import sg.just4fun.tgasdk.callback.TGACallback;
 import sg.just4fun.tgasdk.conctart.SdkActivityDele;
 import sg.just4fun.tgasdk.modle.BipGameUserInfo;
+import sg.just4fun.tgasdk.modle.BipGameUserUser;
 import sg.just4fun.tgasdk.tga.base.HttpBaseResult;
 import sg.just4fun.tgasdk.tga.base.JsonCallback;
 import sg.just4fun.tgasdk.tga.global.AppUrl;
@@ -504,6 +505,13 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                         if (response.body().getStateCode() == 1) {
                             BipGameUserInfo resultInfo = response.body().getResultInfo();
                             LoginUtils.codeEvents(add_view,uuid,true,resultInfo.getAccessToken(),resultInfo.getRefreshToken());
+                            BipGameUserUser user = response.body().getResultInfo().getUser();
+                            SpUtils.putString(HomeActivity.this,"bipHeader",user.getHeader());
+                            SpUtils.putString(HomeActivity.this,"bipName",user.getName());
+                            SpUtils.putString(HomeActivity.this,"bipTxnId",user.getTxnId());
+                            SpUtils.putString(HomeActivity.this,"bipToken", response.body().getResultInfo().getAccessToken());
+                            SpUtils.putString(HomeActivity.this,"bipUserId",String.valueOf(response.body().getResultInfo().getUser().getId()));
+                            SpUtils.putString(HomeActivity.this,"reBipToken",String.valueOf(response.body().getResultInfo().getRefreshToken()));
                             Log.e(TGA,"获取1v1游戏列表token"+response.body().getResultInfo().getAccessToken());
                         }
                     }
