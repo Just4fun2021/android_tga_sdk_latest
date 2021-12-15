@@ -28,7 +28,6 @@ public class GooglePayWayUtils {
 
     public static void getAppIdEvents(WebView webView, String uuid) {
         Gson gson = new Gson();
-
         AppConfig appConfig = gson.fromJson(TgaSdk.appConfigList, AppConfig.class);
         appConfigbeanList = appConfig.getPayMentList();
         if(appConfigbeanList!=null&&!appConfigbeanList.equals("")){
@@ -53,7 +52,7 @@ public class GooglePayWayUtils {
                     jsonObject.put("data","{}");
                     String s = jsonObject.toString();
                     String scriptCode = toJavaScriptCode("null", s);
-                    webView.post(new AdConfigUtlis.ScriptCodeRunnable(scriptCode, webView));
+                    webView.post(new ScriptCodeRunnable(scriptCode, webView));
                 } catch (JSONException jsonException) {
                     jsonException.printStackTrace();
                 }
@@ -65,8 +64,9 @@ public class GooglePayWayUtils {
                 jsonObject.put("data","{}");
                 String s = jsonObject.toString();
                 String scriptCode = toJavaScriptCode("null", s);
-                webView.post(new AdConfigUtlis.ScriptCodeRunnable(scriptCode, webView));
+                webView.post(new ScriptCodeRunnable(scriptCode, webView));
             } catch (JSONException jsonException) {
+                Log.e("配置为空","配置为空="+jsonException.getMessage());
                 jsonException.printStackTrace();
             }
         }

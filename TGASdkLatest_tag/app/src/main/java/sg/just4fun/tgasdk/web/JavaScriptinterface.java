@@ -904,16 +904,21 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     public void onSuccess(Response<HttpBaseResult<GooglePayInfoBean>> response) {
                         if (response.body().getStateCode() == 1) {
                             infoList = response.body().getResultInfo().getData();
-                            if (infoList.size()==0){
-                                Log.e("googlePayWay","googlepay配置表商品为0");
-                                return;
-                            }
-                            for (int a=0;a<infoList.size();a++){
-                               GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
-                                if (googlePayInfo.getWareId().equals(googlePayWayInFo.getId())){
-                                    googlePayWaypay(googlePayInfo.getThirdWareId());
+                            if(infoList!=null){
+                                if (infoList.size()==0){
+                                    Log.e("googlePayWay","googlepay配置表商品为0");
+                                    return;
                                 }
+                                for (int a=0;a<infoList.size();a++){
+                                    GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
+                                    if (googlePayInfo.getWareId().equals(googlePayWayInFo.getId())){
+                                        googlePayWaypay(googlePayInfo.getThirdWareId());
+                                    }
+                                }
+                            }else {
+                                ToastUtil.showLongToastCenter("你还没有配置信息不全,请重新配置列表");
                             }
+
                         }
                     }
                     @Override

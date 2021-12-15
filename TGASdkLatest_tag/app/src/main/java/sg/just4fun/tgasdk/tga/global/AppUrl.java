@@ -10,5 +10,4 @@ public class AppUrl {
     public static final String GAME_BIP_CODE_SDK_USER_INFO=Global.TEST_HOST_GOOGLE_PAY_URL_NEW+"tgadpUser/TPLoginByCode";//bip登录获取用户信息
     public static final String GAME_REFRESHTOKEN=Global.TEST_HOST_GOOGLE_PAY_URL_NEW+"tgadpUser/RefreshToken";//获取刷新后的token
 
-
 }
