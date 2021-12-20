@@ -113,7 +113,6 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         tv_webtitle = findViewById(R.id.tv_webtitle);
         relayout = findViewById(R.id.relayout);
         tv_stuasbar = findViewById(R.id.tv_stuasbar);
-
 //      banner_web = findViewById(R.id.banner_web);
         Intent intent = getIntent();
         youxiUrl = intent.getStringExtra("url");
@@ -432,15 +431,16 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
 //        }
         super.onBackPressed();
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK&& add_view.canGoBack()) {
-
-            add_view.goBack();// 返回前一个页面
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            if (add_view!=null&&add_view.canGoBack()){
+//                add_view.goBack();// 返回前一个页面
+//            }
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
     @Override
     protected void onStop() {
         super.onStop();

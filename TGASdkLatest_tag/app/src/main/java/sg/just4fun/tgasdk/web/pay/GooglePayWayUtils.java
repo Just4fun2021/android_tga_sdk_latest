@@ -27,10 +27,27 @@ public class GooglePayWayUtils {
     private static boolean enabled;
 
     public static void getAppIdEvents(WebView webView, String uuid) {
+            if (TgaSdk.appConfigList==null||TgaSdk.appConfigList.equals("")||TgaSdk.appConfigList.equals("{}")){
+            JSONObject jsonObject=new JSONObject();
+            try {
+                jsonObject.put("uuid",uuid);
+                jsonObject.put("data","{}");
+                String s = jsonObject.toString();
+                Log.e("配置为空","getAppIdEventss ="+s);
+                String scriptCode = toJavaScriptCode("null", s);
+                Log.e("配置为空","getAppIdEvents scriptCode="+scriptCode);
+                webView.post(new ScriptCodeRunnable(scriptCode, webView));
+            } catch (JSONException jsonException) {
+                Log.e("配置为空","getAppIdEvents配置为空="+jsonException.getMessage());
+                jsonException.printStackTrace();
+            }
+            return;
+        }
         Gson gson = new Gson();
         AppConfig appConfig = gson.fromJson(TgaSdk.appConfigList, AppConfig.class);
         appConfigbeanList = appConfig.getPayMentList();
-        if(appConfigbeanList!=null&&!appConfigbeanList.equals("")){
+        if(appConfigbeanList!=null&&appConfigbeanList.size()>0){
+            Log.e("配置为空","配置不为空");
             for (int a=0;a<appConfigbeanList.size();a++){
                 if (appConfigbeanList.get(a).getChannelName().equals("googlePay")) {
                     enabled = appConfigbeanList.get(a).getEnabled();
@@ -58,12 +75,15 @@ public class GooglePayWayUtils {
                 }
             }
         }else {
+            Log.e("配置为空","配置=为空");
             JSONObject jsonObject=new JSONObject();
             try {
                 jsonObject.put("uuid",uuid);
                 jsonObject.put("data","{}");
                 String s = jsonObject.toString();
+                Log.e("配置为空","s ="+s);
                 String scriptCode = toJavaScriptCode("null", s);
+                Log.e("配置为空","scriptCode="+scriptCode);
                 webView.post(new ScriptCodeRunnable(scriptCode, webView));
             } catch (JSONException jsonException) {
                 Log.e("配置为空","配置为空="+jsonException.getMessage());
@@ -102,6 +122,7 @@ public class GooglePayWayUtils {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void run() {
+            Log.e("配置为空", "JSON="+scriptCode +" run on " +webView.getUrl());
             Log.e("执行了回调", "JSON="+scriptCode +" run on " +webView.getUrl());
             webView.evaluateJavascript(scriptCode, null);
 

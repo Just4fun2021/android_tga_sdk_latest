@@ -114,7 +114,6 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         relayout = findViewById(R.id.relayout);
         tv_stuasbar = findViewById(R.id.tv_stuasbar);
 
-
 //
 //        if (Build.VERSION.SDK_INT >= 11) {
 //            add_view.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
