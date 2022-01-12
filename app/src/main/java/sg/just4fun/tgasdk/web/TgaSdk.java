@@ -68,7 +68,7 @@ public class TgaSdk {
     public static String bipToken;
     public static String rebipToken;
     public static TGACallback.GameCenterCallback gameCenterCallback;
-    private static String appCode;
+    public static String appCode;
 
     private TgaSdk() {
 
@@ -382,7 +382,7 @@ public class TgaSdk {
                                     Intent intent = new Intent(context, HomeActivity.class);
                                     intent.putExtra("url",url);
                                     intent.putExtra("gopag",0);
-                                    intent.putExtra("yssdk",0);
+                                    intent.putExtra("yssdk",1);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(intent);
                                 return;
@@ -402,7 +402,7 @@ public class TgaSdk {
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 intent.putExtra("url",url);
                                 intent.putExtra("gopag",0);
-                                intent.putExtra("yssdk",0);
+                                intent.putExtra("yssdk",1);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent);
                                 return;
@@ -420,7 +420,7 @@ public class TgaSdk {
                 }
                 Intent intent = new Intent(context, HomeActivity.class);
                 intent.putExtra("url",url);
-                intent.putExtra("yssdk",0);
+                intent.putExtra("yssdk",1);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 //            }
