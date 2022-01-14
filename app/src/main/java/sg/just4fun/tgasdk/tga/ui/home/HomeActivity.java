@@ -135,10 +135,10 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                     }else if (TgaSdk.appCode.equals("bip")){
                         statusaBarColor="#00B1E9";
                     }else {
-                        statusaBarColor="#04a7e8";
+                        statusaBarColor="#23D3BE";
                     }
                 }else {
-                    statusaBarColor="#04a7e8";
+                    statusaBarColor="#23D3BE";
                 }
             }else {
                 statusaBarColor="#23D3BE";
