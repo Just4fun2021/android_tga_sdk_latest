@@ -87,7 +87,6 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
     private int yssdk;
     public static RelativeLayout relayout_web;
     private H5AdsWebViewClient h5AdsWebViewClient;
-    private String userinfoUrl;
 
     public static String urlEncode(String text) {
         try{
@@ -479,6 +478,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         }
     }
 
+
     private void getUserCodeInfo(Context context,String uuid,String code){
         String  fpId = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
         String data="{}";
@@ -493,12 +493,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-        if(TgaSdk.env.equals("bip")){
-            userinfoUrl= AppUrl.BIP_GAME_BIP_CODE_SDK_USER_INFO;
-        }else {
-            userinfoUrl= AppUrl.GAME_BIP_CODE_SDK_USER_INFO;
-        }
-        OkGo.<HttpBaseResult<BipGameUserInfo>>post(userinfoUrl)
+        OkGo.<HttpBaseResult<BipGameUserInfo>>post(AppUrl.GAME_BIP_CODE_SDK_USER_INFO)
                 .tag(context)
                 .headers("appId",TgaSdk.appId)
                 .upRequestBody(body)
@@ -518,6 +513,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                             SpUtils.putString(WebViewGameActivity.this,"reBipToken",String.valueOf(response.body().getResultInfo().getRefreshToken()));
                         }
                     }
+
                     @Override
                     public void onError(Response<HttpBaseResult<BipGameUserInfo>> response) {
                         Log.e(TGA,"获取1v1游戏列表token失败"+response.getException().getMessage());

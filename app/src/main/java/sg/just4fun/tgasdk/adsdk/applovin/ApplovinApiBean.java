@@ -81,6 +81,8 @@ public class ApplovinApiBean  implements TgaApiBean{
         this.interstitialAdLoaded2 = interstitialAdLoaded2;
     }
 
+
+
     public MaxInterstitialAd getInterstitialAd() {
         return interstitialAd;
     }
@@ -250,6 +252,8 @@ public class ApplovinApiBean  implements TgaApiBean{
             }
 
     }
+
+
 
     public AppLovinSdkConfiguration appLovinSdkConfiguration;
 
