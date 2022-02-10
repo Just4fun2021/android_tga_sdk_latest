@@ -89,6 +89,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
     private String statusaBarColor;
     private int yssdk;
     private H5AdsWebViewClient h5AdsWebViewClient;
+    private String userinfoUrl;
 
     public static String urlEncode(String text) {
         try {
@@ -505,7 +506,12 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-        OkGo.<HttpBaseResult<BipGameUserInfo>>post(AppUrl.GAME_BIP_CODE_SDK_USER_INFO)
+        if(TgaSdk.env.equals("bip")){
+            userinfoUrl= AppUrl.BIP_GAME_BIP_CODE_SDK_USER_INFO;
+        }else {
+            userinfoUrl= AppUrl.GAME_BIP_CODE_SDK_USER_INFO;
+        }
+        OkGo.<HttpBaseResult<BipGameUserInfo>>post(userinfoUrl)
                 .tag(context)
                 .headers("appId",TgaSdk.appId)
                 .upRequestBody(body)
