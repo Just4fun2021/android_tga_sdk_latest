@@ -100,6 +100,8 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
     private int isscu=0;
     private int cishu=5;
     private String metaDataStringApplication1;
+    private String googlepayUrl;
+    private String googlepayresultUrl;
 
     //    public static WebView webView;
     public MyJavaScripface(Activity context, String tgaUrl){
@@ -793,7 +795,12 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-        OkGo.<HttpBaseResult<ResultBean>>post(AppUrl.GET_GOOGLEPAY_RESULT)
+        if(TgaSdk.env.equals("bip")){
+            googlepayresultUrl= AppUrl.BIP_GET_GOOGLEPAY_RESULT;
+        }else {
+            googlepayresultUrl= AppUrl.GET_GOOGLEPAY_RESULT;
+        }
+        OkGo.<HttpBaseResult<ResultBean>>post(googlepayresultUrl)
                 .tag(mContext)
                 .upRequestBody(body)
                 .execute(new JsonCallback<HttpBaseResult<ResultBean>>(mContext) {
@@ -859,8 +866,12 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
         }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, data);
-
-        OkGo.<HttpBaseResult<GooglePayInfoBean>>post(AppUrl.GET_GOOGLEPAY_INFO)
+        if(TgaSdk.env.equals("bip")){
+            googlepayUrl= AppUrl.BIP_GET_GOOGLEPAY_INFO;
+        }else {
+            googlepayUrl= AppUrl.GET_GOOGLEPAY_INFO;
+        }
+        OkGo.<HttpBaseResult<GooglePayInfoBean>>post(googlepayUrl)
                 .tag(context)
                 .upRequestBody(body)
                 .execute(new JsonCallback<HttpBaseResult<GooglePayInfoBean>>(context) {
