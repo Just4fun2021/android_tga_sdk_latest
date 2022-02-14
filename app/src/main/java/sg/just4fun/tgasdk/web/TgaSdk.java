@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -358,38 +359,67 @@ public class TgaSdk {
         }else {
             gamelistUrl= AppUrl.GET_GAME_LIST;
         }
-        OkGo.<HttpBaseResult<GameListInfoBean>>post(gamelistUrl)
+//
+        OkGo.<String>post(gamelistUrl)
                 .tag(mContext)
                 .headers("Authorization",accessToken)//
                 .headers("appId",appId)//
                 .headers("lang",lang)
                 .upRequestBody(body)
-                .execute(new JsonCallback<HttpBaseResult<GameListInfoBean>>(mContext) {
+                .execute(new JsonCallback<String>(mContext) {
                     @Override
-                    public void onSuccess(Response<HttpBaseResult<GameListInfoBean>> response) {
-                        if (response.body().getStateCode() == 1) {
-                             gameif = response.body().getResultInfo().getData();
-                             Log.e(TGA,"1V1游戏列表数据="+gameif);
-                            String lang1 = listener.getLang();
-                            if (lang1==null||lang1.equals("")){
-                                String local = Locale.getDefault().toString();
-                                lang= Conctart.toStdLang(local);
-                            }else {
-                                lang=lang1;
+                    public void onSuccess(Response response) {
+                        String s1 = response.body().toString();
+//                        s1="{\"stateCode\":1,\"resultInfo\":{\"totalCount\":0,\"desc\":\"SUCCESS\",\"itemCount\":0}}";
+                        Log.e(TGA,"初始化成功的="+s1);
+                        Gson gson = new GsonBuilder()
+                                .serializeNulls()
+                                .create();
+                        HttpBaseResult httpBaseResult = gson.fromJson(s1, HttpBaseResult.class);
+                        if (httpBaseResult.getStateCode() == 1) {
+                            String s = gson.toJson(httpBaseResult.getResultInfo());
+//                            GameListInfoBean resultInfo = gson.fromJson(s, GameListInfoBean.class);
+                            try {
+                                Log.e(TGA,"gameif="+s);
+                                JSONObject jsonObject1 = new JSONObject(s);
+
+                                JSONArray data1 = jsonObject1.getJSONArray("data");
+                                if(data1!=null&&data1.length()>0){
+                                    gameif.clear();
+                                    for (int a=0;a<data1.length();a++){
+                                        String o = String.valueOf(data1.get(a));
+                                        gameif.add(gson.fromJson(o,GameinfoBean.class));
+                                    }
+                                    Log.e(TGA,"1V1游戏列表数据="+gameif.size());
+                                    String lang1 = listener.getLang();
+                                    if (lang1==null||lang1.equals("")){
+                                        String local = Locale.getDefault().toString();
+                                        lang= Conctart.toStdLang(local);
+                                    }else {
+                                        lang=lang1;
+                                    }
+                                    for (int a=0;a<gameif.size();a++){
+                                        Log.e(TGA,"1V1游戏列表数据="+gameif.get(a).getName());
+                                        String s2 = Conctant.gameName(lang, gameif.get(a).getName());
+                                        gameif.get(a).setName(s2);
+                                        Log.e(TGA,"1V1游戏列表数据name="+s2);
+                                        String s3 = Conctant.gameName(lang, gameif.get(a).getRemark());
+                                        gameif.get(a).setRemark(s3);
+                                        Log.e(TGA,"1V1游戏列表数据remark="+s3);
+                                    }
+                                }else {
+                                    Log.e(TGA,"data是不是空=空了");
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.e(TGA,"data是不是空="+e.getMessage());
                             }
-                            for (int a=0;a<gameif.size();a++){
-                                Log.e(TGA,"1V1游戏列表数据="+gameif.get(a).getName());
-                                String s = Conctant.gameName(lang, gameif.get(a).getName());
-                                gameif.get(a).setName(s);
-                                Log.e(TGA,"1V1游戏列表数据name="+s);
-                                String s1 = Conctant.gameName(lang, gameif.get(a).getRemark());
-                                gameif.get(a).setRemark(s1);
-                                Log.e(TGA,"1V1游戏列表数据remark="+s1);
-                            }
+
                         }
                     }
                     @Override
-                    public void onError(Response<HttpBaseResult<GameListInfoBean>> response) {
+                    public void onError(Response response) {
                         Log.e(TGA,"1V1游戏列表数据失败="+response.getException().getMessage());
 
                     }
