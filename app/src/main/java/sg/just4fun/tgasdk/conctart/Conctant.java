@@ -113,15 +113,17 @@ public class Conctant {
 //皮肤主题颜色的配置
     public static String themeCorol(String theme){
         if (theme.equals("regular")){
-            return "bip";
+            return "regular";
         }else if(theme.equals("lavender")){
-            return "bip-lavender";
+            return "lavender";
         }else if (theme.equals("orange")){
-            return "bip-orange";
+            return "orange";
         }else if (theme.equals("dark")){
-            return "bip-dark";
+            return "dark";
         }else if (theme.equals("night-blue")){
-            return "bip-night-blue";
+            return "night-blue";
+        }else if (theme.equals("dark-blue")){
+            return "khalaspay";
         }else {
             return theme;
         }

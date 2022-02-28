@@ -155,7 +155,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
 
              }
          }
-
           metaDataStringApplication1 = Conctart.getMetaDataStringApplication(context,"applovin.sdk.key", "");
         Log.d("tgasdk-js", "Apploving Init Begin");
         Log.d(TGA, "apploving="+metaDataStringApplication1);
@@ -258,8 +257,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     public String getTgaSdkVersion(String type){
         return "0.1";
     }
-
-
     @JavascriptInterface
     public void facebookeLogin() {
         Log.d("FB","facebookeLogin");
@@ -425,8 +422,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
         Log.e("goPage","关闭");
         GoogleBillingUtil.cleanListener();
         context.finish(); //返回键点击
-
-
     }
     @JavascriptInterface
     public void getPayAppid(String uuid,  String options) {
@@ -568,7 +563,14 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
             TgaSdk.gameCenterCallback.openUserLogin(uuid);
         }
     }
-
+    //设置游戏中心页状态栏颜色
+    @JavascriptInterface
+    public void statusBarColor(String uuid, String options) {
+        Log.e("游戏中心页状态栏颜色","options="+options);
+        String colorString="#"+options;
+        Log.e("游戏中心页状态栏颜色","options="+options+"  "+colorString);
+        HomeActivity.tv_stuasbar.setBackgroundColor(Color.parseColor(colorString));
+    }
 
     @Override
     public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
@@ -615,7 +617,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
         Log.d("javascriptInterface", "tryFlushEvents " + uuid + " " + options);
         TgaAdSdkUtils.flushAllEvents(webview);
     }
-
 
 //        public void onEvent(String event, JSONObject params) {
 //        webview.evaluateJavascript("tgasdk.nativeEvent(\"" +event + "\", " + params.toString(), null);

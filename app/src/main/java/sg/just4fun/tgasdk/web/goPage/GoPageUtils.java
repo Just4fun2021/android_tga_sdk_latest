@@ -70,7 +70,6 @@ public class GoPageUtils {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
     }
 
     public static String toJavaScriptCode(String error,String string )  {
@@ -106,8 +105,7 @@ public class GoPageUtils {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void run() {
-            Log.d("goPage执行了回调", "JSON="+scriptCode +" run on " +
-                        webView.getUrl());
+            Log.d("goPage执行了回调", "JSON="+scriptCode +" run on " +webView.getUrl());
                 webView.evaluateJavascript(scriptCode, null);
         }
     }

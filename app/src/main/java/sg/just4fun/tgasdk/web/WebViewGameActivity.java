@@ -194,7 +194,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                         lang1= Conctart.toStdLang(local);
                         upWebview(gopag,lang1,add_view);
                     } else {
-                        //TODO: 需要开发标准化处理lang。这里暂时假定客户的APP给的已经是标准化的了
+
                         String s = Conctart.toStdLang(lang);
                         upWebview(gopag,s,add_view);
                     }
