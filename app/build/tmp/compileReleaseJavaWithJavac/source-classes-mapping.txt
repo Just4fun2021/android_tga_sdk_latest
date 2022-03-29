@@ -47,10 +47,18 @@ sg/just4fun/tgasdk/modle/ShareConfigBean.java
 sg/just4fun/tgasdk/callback/TGACallback.java
  sg.just4fun.tgasdk.callback.TGACallback
  sg.just4fun.tgasdk.callback.TGACallback$CodeCallback
+ sg.just4fun.tgasdk.callback.TGACallback$FightCallback
  sg.just4fun.tgasdk.callback.TGACallback$FightGameCallback
+ sg.just4fun.tgasdk.callback.TGACallback$FightGameInfoCallback
+ sg.just4fun.tgasdk.callback.TGACallback$FightGameRoomCallback
+ sg.just4fun.tgasdk.callback.TGACallback$FightGameTotalScoreCallback
+ sg.just4fun.tgasdk.callback.TGACallback$FightTicketCallback
  sg.just4fun.tgasdk.callback.TGACallback$GameCenterCallback
+ sg.just4fun.tgasdk.callback.TGACallback$GoldDiamondInfoCallback
+ sg.just4fun.tgasdk.callback.TGACallback$HomeGameListCallback
  sg.just4fun.tgasdk.callback.TGACallback$LangCallback
  sg.just4fun.tgasdk.callback.TGACallback$OutLoginCallback
+ sg.just4fun.tgasdk.callback.TGACallback$QuickFightGameRoomCallback
  sg.just4fun.tgasdk.callback.TGACallback$ShareCallback
  sg.just4fun.tgasdk.callback.TGACallback$TgaEventListener
  sg.just4fun.tgasdk.callback.TGACallback$initCallback
@@ -91,6 +99,21 @@ sg/just4fun/tgasdk/modle/PriceBean.java
  sg.just4fun.tgasdk.modle.PriceBean
 sg/just4fun/tgasdk/tga/view/immersionbar/ImmersionProxy.java
  sg.just4fun.tgasdk.tga.view.immersionbar.ImmersionProxy
+sg/just4fun/tgasdk/tga/global/HttpGetData.java
+ sg.just4fun.tgasdk.tga.global.HttpGetData
+ sg.just4fun.tgasdk.tga.global.HttpGetData$1
+ sg.just4fun.tgasdk.tga.global.HttpGetData$10
+ sg.just4fun.tgasdk.tga.global.HttpGetData$11
+ sg.just4fun.tgasdk.tga.global.HttpGetData$12
+ sg.just4fun.tgasdk.tga.global.HttpGetData$13
+ sg.just4fun.tgasdk.tga.global.HttpGetData$2
+ sg.just4fun.tgasdk.tga.global.HttpGetData$3
+ sg.just4fun.tgasdk.tga.global.HttpGetData$4
+ sg.just4fun.tgasdk.tga.global.HttpGetData$5
+ sg.just4fun.tgasdk.tga.global.HttpGetData$6
+ sg.just4fun.tgasdk.tga.global.HttpGetData$7
+ sg.just4fun.tgasdk.tga.global.HttpGetData$8
+ sg.just4fun.tgasdk.tga.global.HttpGetData$9
 sg/just4fun/tgasdk/adsdk/applovin/ApplovinApiBean.java
  sg.just4fun.tgasdk.adsdk.applovin.ApplovinApiBean
  sg.just4fun.tgasdk.adsdk.applovin.ApplovinApiBean$1
@@ -146,7 +169,6 @@ sg/just4fun/tgasdk/tga/ui/my/fragment/MyJavaScripface.java
  sg.just4fun.tgasdk.tga.ui.my.fragment.MyJavaScripface$1
  sg.just4fun.tgasdk.tga.ui.my.fragment.MyJavaScripface$2
  sg.just4fun.tgasdk.tga.ui.my.fragment.MyJavaScripface$3
- sg.just4fun.tgasdk.tga.ui.my.fragment.MyJavaScripface$4
  sg.just4fun.tgasdk.tga.ui.my.fragment.MyJavaScripface$MyOnPurchaseFinishedListener
  sg.just4fun.tgasdk.tga.ui.my.fragment.MyJavaScripface$MyOnQueryFinishedListener
  sg.just4fun.tgasdk.tga.ui.my.fragment.MyJavaScripface$MyOnStartSetupFinishedListener
@@ -156,6 +178,8 @@ sg/just4fun/tgasdk/adsdk/TgaAdSdkEventData.java
  sg.just4fun.tgasdk.adsdk.TgaAdSdkEventData
 sg/just4fun/tgasdk/modle/BipGameUserInfo.java
  sg.just4fun.tgasdk.modle.BipGameUserInfo
+sg/just4fun/tgasdk/modle/UsersinputBean.java
+ sg.just4fun.tgasdk.modle.UsersinputBean
 sg/just4fun/tgasdk/tga/global/AppUrl.java
  sg.just4fun.tgasdk.tga.global.AppUrl
 sg/just4fun/tgasdk/web/WebViewGameActivity.java
@@ -214,7 +238,6 @@ sg/just4fun/tgasdk/web/JavaScriptinterface.java
  sg.just4fun.tgasdk.web.JavaScriptinterface$2
  sg.just4fun.tgasdk.web.JavaScriptinterface$3
  sg.just4fun.tgasdk.web.JavaScriptinterface$4
- sg.just4fun.tgasdk.web.JavaScriptinterface$5
  sg.just4fun.tgasdk.web.JavaScriptinterface$MyOnPurchaseFinishedListener
  sg.just4fun.tgasdk.web.JavaScriptinterface$MyOnQueryFinishedListener
  sg.just4fun.tgasdk.web.JavaScriptinterface$MyOnStartSetupFinishedListener
@@ -231,10 +254,6 @@ sg/just4fun/tgasdk/web/Conctart.java
 sg/just4fun/tgasdk/web/TgaSdk.java
  sg.just4fun.tgasdk.web.TgaSdk
  sg.just4fun.tgasdk.web.TgaSdk$1
- sg.just4fun.tgasdk.web.TgaSdk$2
- sg.just4fun.tgasdk.web.TgaSdk$3
- sg.just4fun.tgasdk.web.TgaSdk$4
- sg.just4fun.tgasdk.web.TgaSdk$5
 sg/just4fun/tgasdk/web/banner/AdConfigUtlis.java
  sg.just4fun.tgasdk.web.banner.AdConfigUtlis
  sg.just4fun.tgasdk.web.banner.AdConfigUtlis$ScriptCodeRunnable
