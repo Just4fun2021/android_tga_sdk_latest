@@ -61,6 +61,7 @@ import sg.just4fun.tgasdk.modle.PriceBean;
 import sg.just4fun.tgasdk.tga.base.HttpBaseResult;
 import sg.just4fun.tgasdk.tga.base.JsonCallback;
 import sg.just4fun.tgasdk.tga.global.AppUrl;
+import sg.just4fun.tgasdk.tga.global.HttpGetData;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
 import sg.just4fun.tgasdk.tga.utils.SpUtils;
 import sg.just4fun.tgasdk.tga.utils.ToastUtil;
@@ -420,9 +421,9 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
             orderId = googlePayWayInFo.getOrder();
             Log.e("googlePayWay","orderId="+orderId);
             if (googlePayWayInFo.getPayType().equals("googlePay")){
-                if(TgaSdk.infoList!=null&&TgaSdk.infoList.size()>0){
-                    for (int a=0;a<TgaSdk.infoList.size();a++){
-                      GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
+                if(HttpGetData.infoList!=null&& HttpGetData.infoList.size()>0){
+                    for (int a=0;a<HttpGetData.infoList.size();a++){
+                      GooglePayInfo googlePayInfo = HttpGetData.infoList.get(a);
 
                         if (googlePayInfo.getWareId().equals(googlePayWayInFo.getId())){
                             Log.e("googlePayWay","googlePayInfo.getWareId()="+googlePayInfo.getWareId());
@@ -432,7 +433,7 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
                     }
                 }else {
                     Log.e("googlePayWay","TgaSdk.infoList=null");
-                    getGooglePayInfo(context,TgaSdk.appId);
+                    HttpGetData.getGooglePayInfo(context,TgaSdk.appId,TgaSdk.env);
 
                 }
             }else {
@@ -853,51 +854,6 @@ public class MyJavaScripface implements PurchasesUpdatedListener{
             }
         }
         return str;
-    }
-    private void getGooglePayInfo(Context context, String appId) {
-
-        JSONObject jsonObject = new JSONObject();
-        String data = "{}";
-        try {
-            jsonObject.put("appId", appId);
-            data = jsonObject.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody body = RequestBody.create(JSON, data);
-        if(TgaSdk.env.equals("bip")){
-            googlepayUrl= AppUrl.BIP_GET_GOOGLEPAY_INFO;
-        }else {
-            googlepayUrl= AppUrl.GET_GOOGLEPAY_INFO;
-        }
-        OkGo.<HttpBaseResult<GooglePayInfoBean>>post(googlepayUrl)
-                .tag(context)
-                .upRequestBody(body)
-                .execute(new JsonCallback<HttpBaseResult<GooglePayInfoBean>>(context) {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onSuccess(Response<HttpBaseResult<GooglePayInfoBean>> response) {
-                        if (response.body().getStateCode() == 1) {
-
-                            infoList = response.body().getResultInfo().getData();
-                            if (infoList.size()==0){
-                                Log.e("googlePayWay","googlepay配置表商品为0");
-                                return;
-                            }
-                            for (int a=0;a<infoList.size();a++){
-                                GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
-                                if (googlePayInfo.getWareId().equals(googlePayWayInFo.getId())){
-                                    googlePayWaypay(googlePayInfo.getThirdWareId());
-                                }
-                            }
-                        }
-                    }
-                    @Override
-                    public void onError(Response<HttpBaseResult<GooglePayInfoBean>> response) {
-                        Log.e("googlePayWay","获取配置表商品失败"+response.getException().toString());
-                    }
-                });
     }
 
 }

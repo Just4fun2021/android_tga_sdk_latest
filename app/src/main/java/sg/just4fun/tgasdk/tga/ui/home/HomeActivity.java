@@ -49,6 +49,7 @@ import okhttp3.RequestBody;
 import sg.just4fun.tgasdk.R;
 import sg.just4fun.tgasdk.adsdk.TgaAdSdkUtils;
 import sg.just4fun.tgasdk.callback.TGACallback;
+import sg.just4fun.tgasdk.conctart.Conctant;
 import sg.just4fun.tgasdk.conctart.SdkActivityDele;
 import sg.just4fun.tgasdk.modle.BipGameUserInfo;
 import sg.just4fun.tgasdk.modle.BipGameUserUser;
@@ -178,16 +179,8 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                 upWebview(youxiUrl,gopag, string, add_view);
             } else {
                 if (TgaSdk.listener != null) {
-                    String lang = TgaSdk.listener.getLang();
-                    if (lang == null || lang.trim().equals("")) {
-                        String local = Locale.getDefault().toString();
-                        lang1 = Conctart.toStdLang(local);
-                        upWebview(youxiUrl,gopag, lang1, add_view);
-                    } else {
-                        //TODO: 需要开发标准化处理lang。这里暂时假定客户的APP给的已经是标准化的了
-                        String s = Conctart.toStdLang(lang);
-                        upWebview(youxiUrl,gopag, s, add_view);
-                    }
+                    String langString = Conctant.getLangString();
+                    upWebview(youxiUrl,gopag, langString, add_view);
                 } else {
                     String local = Locale.getDefault().toString();
                     lang1 = Conctart.toStdLang(local);

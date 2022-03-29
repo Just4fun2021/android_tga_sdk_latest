@@ -11,6 +11,14 @@ public class TGACallback {
     public static FightGameCallback fightGameListener;
     public static CodeCallback codeCallback;
     public static OutLoginCallback outLoginCallback;
+    public static FightCallback fightCallback;
+    public static FightTicketCallback fightTicketCallback;
+    public static HomeGameListCallback homeGameListCallback;
+    public static FightGameRoomCallback fightGameRoomCallback;
+    public static FightGameInfoCallback fightGameInfoCallback;
+    public static QuickFightGameRoomCallback quickFightGameRoomCallback;
+    public static FightGameTotalScoreCallback fightGameTotalScoreCallback;
+    public static GoldDiamondInfoCallback goldDiamondInfoCallback;
 
 
     public interface initCallback {
@@ -87,4 +95,63 @@ public class TGACallback {
         TGACallback.codeCallback = codeCallback;
     }
 
+    public interface FightCallback {//fight对战轮询接口
+        void fightCall(String bean);
+    }
+    public static void setFightCallback(FightCallback fightCallback) {
+        TGACallback.fightCallback = fightCallback;
+    }
+    public interface FightTicketCallback {//fight对战ticket
+        void fightTiketCall(String bean);
+    }
+    public static void setFightTicketCallback(FightTicketCallback fightTicketCallback) {
+        TGACallback.fightTicketCallback = fightTicketCallback;
+    }
+
+    public interface HomeGameListCallback {//首页游戏列表数据回调
+        void homeGameListCallback(String bean);
+    }
+    public static void setHomeGameListCallback(HomeGameListCallback homeGameListCallback) {
+        TGACallback.homeGameListCallback = homeGameListCallback;
+    }
+
+    public interface FightGameRoomCallback {//对战游戏创建房间数据回调
+        void fightGameRoomCallback(String bean);
+    }
+    public static void setFightGameRoomCallback(FightGameRoomCallback fightGameRoomCallback) {
+        TGACallback.fightGameRoomCallback = fightGameRoomCallback;
+    }
+
+    public interface FightGameInfoCallback {//获取某一款游戏信息
+         void fightGameInfoCallback(String bean);
+    }
+    public static void setFightGameInfoCallback(FightGameInfoCallback fightGameInfoCallback) {
+        TGACallback.fightGameInfoCallback = fightGameInfoCallback;
+    }
+
+    public interface QuickFightGameRoomCallback {//快速匹配游戏创建房间回调
+        void quickFightGameRoomCallback(String bean);
+    }
+    public static void setQuickFightGameRoomCallback(QuickFightGameRoomCallback quickFightGameRoomCallback) {
+        TGACallback.quickFightGameRoomCallback = quickFightGameRoomCallback;
+    }
+
+    public interface FightGameTotalScoreCallback {//获取总战绩回调
+        void fightGameTotalScoreCallback(String bean);
+    }
+    public static void setFightGameTotalScoreCallback(FightGameTotalScoreCallback fightGameTotalScoreCallback) {
+        TGACallback.fightGameTotalScoreCallback = fightGameTotalScoreCallback;
+    }
+
+
+    public interface GoldDiamondInfoCallback {//获取金币钻石信息回调
+        void goldDiamondInfoCallback(String bean);
+    }
+    public static void setGoldDiamondInfoCallback(GoldDiamondInfoCallback goldDiamondInfoCallback) {
+        TGACallback.goldDiamondInfoCallback = goldDiamondInfoCallback;
+    }
+
 }
+
+
+

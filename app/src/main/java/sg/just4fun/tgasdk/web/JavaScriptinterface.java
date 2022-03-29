@@ -70,6 +70,7 @@ import sg.just4fun.tgasdk.modle.PriceBean;
 import sg.just4fun.tgasdk.tga.base.HttpBaseResult;
 import sg.just4fun.tgasdk.tga.base.JsonCallback;
 import sg.just4fun.tgasdk.tga.global.AppUrl;
+import sg.just4fun.tgasdk.tga.global.HttpGetData;
 import sg.just4fun.tgasdk.tga.ui.home.HomeActivity;
 import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
 import sg.just4fun.tgasdk.tga.utils.SpUtils;
@@ -419,7 +420,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void finishPage(String uuid,  String options) {
-        Log.e("goPage","关闭");
+        Log.e("goPage","关闭游戏");
         GoogleBillingUtil.cleanListener();
         context.finish(); //返回键点击
     }
@@ -441,9 +442,9 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
              Log.e("googlePayWay","orderId="+orderId);
             String s = googlePayWayInFo.getPayType().toLowerCase();
             if (s.equals("googlepay")){
-                if(TgaSdk.infoList!=null&&TgaSdk.infoList.size()>0){
-                    for (int a=0;a<TgaSdk.infoList.size();a++){
-                        GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
+                if(HttpGetData.infoList!=null&&HttpGetData.infoList.size()>0){
+                    for (int a=0;a<HttpGetData.infoList.size();a++){
+                        GooglePayInfo googlePayInfo = HttpGetData.infoList.get(a);
                         if (googlePayInfo.getWareId().equals(googlePayWayInFo.getId())){
                             Log.e("googlePayWay","googlePayInfo.getWareId()="+googlePayInfo.getWareId());
                             Log.e("googlePayWay","商品id"+googlePayWayInFo.getId());
@@ -452,7 +453,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
                     }
                 }else {
                     Log.e("googlePayWay","TgaSdk.infoList=null");
-                    getGooglePayInfo(context,TgaSdk.appId);
+                    HttpGetData.getGooglePayInfo(context,TgaSdk.appId,TgaSdk.env);
 
                 }
             }else {
@@ -811,7 +812,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
         }
     }
 
-
+//通知服务器google支付结果
     private void googlePayResult(String appId, Context mContext, String orderId, String encryptStr, String payType, String callbackKey, int state) {
         JSONObject jsonObject = new JSONObject();
         String data = "{}";
@@ -890,57 +891,6 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
             }
         }
         return str;
-    }
-    private void getGooglePayInfo(Context context, String appId) {
-        JSONObject jsonObject = new JSONObject();
-        String data = "{}";
-        try {
-            jsonObject.put("appId", appId);
-            data = jsonObject.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody body = RequestBody.create(JSON, data);
-        Log.e("初始化","body="+body.toString());
-        if(TgaSdk.env.equals("bip")){
-            googlepayUrl= AppUrl.BIP_GET_GOOGLEPAY_INFO;
-        }else {
-            googlepayUrl= AppUrl.GET_GOOGLEPAY_INFO;
-        }
-        OkGo.<HttpBaseResult<GooglePayInfoBean>>post(googlepayUrl)
-                .tag(context)
-                .upRequestBody(body)
-                .execute(new JsonCallback<HttpBaseResult<GooglePayInfoBean>>(context) {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onSuccess(Response<HttpBaseResult<GooglePayInfoBean>> response) {
-                        if (response.body().getStateCode() == 1) {
-                            infoList = response.body().getResultInfo().getData();
-                            if(infoList!=null){
-                                if (infoList.size()==0){
-                                    Log.e("googlePayWay","googlepay配置表商品为0");
-                                    return;
-                                }
-                                for (int a=0;a<infoList.size();a++){
-                                    GooglePayInfo googlePayInfo = TgaSdk.infoList.get(a);
-                                    if (googlePayInfo.getWareId().equals(googlePayWayInFo.getId())){
-                                        googlePayWaypay(googlePayInfo.getThirdWareId());
-                                    }
-                                }
-                            }else {
-                                ToastUtil.showLongToastCenter("你还没有配置信息不全,请重新配置列表");
-                            }
-
-                        }
-                    }
-                    @Override
-                    public void onError(Response<HttpBaseResult<GooglePayInfoBean>> response) {
-                        Log.e("googlePayWay","获取配置表商品失败"+response.getException().toString());
-
-                    }
-                });
-
     }
 
 

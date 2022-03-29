@@ -14,10 +14,15 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import sg.just4fun.tgasdk.modle.GameNameDataTitle;
+import sg.just4fun.tgasdk.web.Conctart;
+import sg.just4fun.tgasdk.web.TgaSdk;
 
 public class Conctant {
+
+    private static String lang1;
 
     /**
      * 获取版本号
@@ -124,9 +129,23 @@ public class Conctant {
             return "night-blue";
         }else if (theme.equals("dark-blue")){
             return "khalaspay";
+        }else if (theme.equals("gnc")){
+            return "gnc";
         }else {
             return theme;
         }
     }
+    public static  String  getLangString() {
+        String lang = TgaSdk.listener.getLang();
+        if (lang == null || lang.trim().equals("")) {
+            String local = Locale.getDefault().toString();
+          lang1= Conctart.toStdLang(local);
+        } else {
+            //TODO: 需要开发标准化处理lang。这里暂时假定客户的APP给的已经是标准化的了
+              lang1 = Conctart.toStdLang(lang);
+        }
+        return lang1;
+    }
+
 
 }

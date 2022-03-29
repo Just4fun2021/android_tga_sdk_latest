@@ -454,6 +454,8 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         Log.e(TGA,"onStop");
         if(TGACallback.fightGameListener!=null){
             TGACallback.fightGameListener.fightGameCall();
+        }else {
+            Log.e(TGA,"TGACallback.fightGameListener=null");
         }
     }
     @Override
