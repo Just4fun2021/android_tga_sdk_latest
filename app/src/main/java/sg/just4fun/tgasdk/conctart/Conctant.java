@@ -93,22 +93,16 @@ public class Conctant {
                                     return bipGameFristDataTitle.getValues();
                                 }
                             }
-
                         }else {
                             String jsonObject = String.valueOf(jsonArray.getJSONObject(0));
                             GameNameDataTitle bipGameFristDataTitle = gson.fromJson(jsonObject, GameNameDataTitle.class);
                             return bipGameFristDataTitle.getValues();
                         }
                     }
-
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-
         }
 
         return "";

@@ -284,6 +284,10 @@ public class TgaSdk {
                             initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
                             return;
                         }
+                    }else  if(isSuccess==2){
+                        Log.e(TGA,"初始化.isSuccess=2");
+                        initCallback.initError(mContext.getResources().getString(R.string.sdkinitcompleted));
+                        return;
                     }else {
                         Log.e(TGA,"初始化.isSuccess=0");
                         initCallback.initError(mContext.getResources().getString(R.string.sdkiniterror));
@@ -383,6 +387,7 @@ public class TgaSdk {
 
 //拉取SDK配置表
     public static void getUserInfo(String appKe){
+        isSuccess=2;
         JSONObject jsonObject = new JSONObject();
         String data = "{}";
         try {
@@ -429,6 +434,7 @@ public class TgaSdk {
 //                            通过code获取用户信息
                             String userInfo = listener.getAuthCode();
                             SpUtils.putString(mContext,"yhAppId",appId);
+                            isSuccess=2;
                             if(userInfo!=null&&!userInfo.equals("")){
                                HttpGetData.userCodeLogin(mContext,pkName,resultInfo,gson,TgaSdk.env,listener,appId);
                             }else {
