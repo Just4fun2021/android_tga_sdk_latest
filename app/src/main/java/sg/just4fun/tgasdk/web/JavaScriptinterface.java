@@ -567,10 +567,13 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     //设置游戏中心页状态栏颜色
     @JavascriptInterface
     public void statusBarColor(String uuid, String options) {
-        Log.e("游戏中心页状态栏颜色","options="+options);
-        String colorString="#"+options;
-        Log.e("游戏中心页状态栏颜色","options="+options+"  "+colorString);
-        HomeActivity.tv_stuasbar.setBackgroundColor(Color.parseColor(colorString));
+//        Log.e("游戏中心页状态栏颜色","options="+options);
+//        String colorString="#"+options;
+//        Log.e("游戏中心页状态栏颜色","options="+options+"  "+colorString);
+//        if ( WebViewGameActivity.tv_stuasbar!=null){
+//            WebViewGameActivity.tv_stuasbar.setBackgroundColor(Color.parseColor(colorString));
+//        }
+//        HomeActivity.tv_stuasbar.setBackgroundColor(Color.parseColor(colorString));
     }
 
     @Override

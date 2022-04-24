@@ -72,7 +72,7 @@ public class TgaSdk {
     public static String msisid="";
     public static String env;
     private static String infoUrl;
-    private static String theme1;
+    public static String theme1;
     private static String theme;
     private static String lang1;
     public static String gameid;
@@ -191,15 +191,14 @@ public class TgaSdk {
             JSONObject user = jsonObject.getJSONObject("user");
             bipToken = jsonObject.getString("accessToken");
             rebipToken = jsonObject.getString("refreshToken");
-            String txnId = user.getString("txnId");
-
             bipUserid= user.getInt("id");
-
-            SpUtils.putString(mContext,"bipTxnId",txnId);
             SpUtils.putString(mContext,"bipToken", bipToken);
             SpUtils.putInt(mContext,"bipUserId",bipUserid);
             SpUtils.putString(mContext,"reBipToken",rebipToken);
             HttpGetData.getGameListHttp(mContext,appId, bipToken,rebipToken,TgaSdk.env,TgaSdk.listener);
+
+            String txnId = user.getString("txnId");
+            SpUtils.putString(mContext,"bipTxnId",txnId);
             String name = user.getString("name");
             String header = user.getString("header");
             SpUtils.putString(mContext,"bipHeader",header);
@@ -222,9 +221,11 @@ public class TgaSdk {
 //
 //                String yhAppId = SpUtils.getString(mContext, "yhAppId", "");
         if (theme==null||theme.equals("")){
-            theme1=appCode;
+//            theme1=appCode;
+            theme1 =Conctant.themeCorolAppCode(appCode);
         }else {
-            theme1=theme;
+//            theme1=theme;
+            theme1 = Conctant.themeCorolVuel(theme);
         }
                 String bipHeader = SpUtils.getString(mContext, "bipHeader", "");
                 String bipName = SpUtils.getString(mContext, "bipName", "");
@@ -241,11 +242,14 @@ public class TgaSdk {
                             if(bipToken==null||bipToken.equals("")){
                                     Log.e(TGA,"bipToken="+bipToken);
 //                                  "&txnId=1&msisdn=1"+
-                                    url= TgaSdk.gameCentreUrl+"?appId="+TgaSdk.appId+"&theme="+theme1+"&navigationbar="+navigationbar+"&token="+bipToken+"&refresh-token="+reBipToken;//无底部
+                                   url= TgaSdk.gameCentreUrl+"?appId="+TgaSdk.appId+"&theme="+theme1+"&navigationbar="+navigationbar+"&token="+bipToken+"&refresh-token="+reBipToken;//无底部
+
+                                    theme1="#"+theme1;
                                     Intent intent = new Intent(context, HomeActivity.class);
                                     intent.putExtra("url",url);
                                     intent.putExtra("gopag",0);
                                     intent.putExtra("yssdk",1);
+                                     intent.putExtra("statusaBarColor",theme1);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(intent);
                                 return;
@@ -271,10 +275,12 @@ public class TgaSdk {
                                 }else {
                                     url= TgaSdk.gameCentreUrl+ "?"+txnid+"&theme="+theme1+"&appId="+ TgaSdk.appId+"&navigationbar="+navigationbar+"&nickname="+bipName+"&token="+bipToken+"&refresh-token="+reBipToken+msisid+"&appversion="+version+"&avatar="+bipHeader;//无底部
                                 }
+                                theme1="#"+theme1;
                                 Intent intent = new Intent(context, HomeActivity.class);
                                 intent.putExtra("url",url);
                                 intent.putExtra("gopag",0);
                                 intent.putExtra("yssdk",1);
+                                intent.putExtra("statusaBarColor",theme1);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent);
                                 return;
@@ -294,9 +300,11 @@ public class TgaSdk {
                         return;
                     }
                 }
+        theme1="#"+theme1;
                 Intent intent = new Intent(context, HomeActivity.class);
                 intent.putExtra("url",url);
                 intent.putExtra("yssdk",1);
+        intent.putExtra("statusaBarColor",theme1);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 //            }
