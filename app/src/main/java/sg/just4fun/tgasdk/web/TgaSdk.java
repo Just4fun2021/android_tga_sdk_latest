@@ -82,6 +82,7 @@ public class TgaSdk {
     public static String ticket;
     public static int enemyid;
     public static int masterid;
+    public static String theme2;
 
     private TgaSdk() {
 
@@ -223,9 +224,11 @@ public class TgaSdk {
         if (theme==null||theme.equals("")){
 //            theme1=appCode;
             theme1 =Conctant.themeCorolAppCode(appCode);
+            theme2=appCode;
         }else {
 //            theme1=theme;
             theme1 = Conctant.themeCorolVuel(theme);
+            theme2=theme;
         }
                 String bipHeader = SpUtils.getString(mContext, "bipHeader", "");
                 String bipName = SpUtils.getString(mContext, "bipName", "");
@@ -242,7 +245,7 @@ public class TgaSdk {
                             if(bipToken==null||bipToken.equals("")){
                                     Log.e(TGA,"bipToken="+bipToken);
 //                                  "&txnId=1&msisdn=1"+
-                                   url= TgaSdk.gameCentreUrl+"?appId="+TgaSdk.appId+"&theme="+theme1+"&navigationbar="+navigationbar+"&token="+bipToken+"&refresh-token="+reBipToken;//无底部
+                                   url= TgaSdk.gameCentreUrl+"?appId="+TgaSdk.appId+"&theme="+theme2+"&navigationbar="+navigationbar+"&token="+bipToken+"&refresh-token="+reBipToken;//无底部
 
                                     theme1="#"+theme1;
                                     Intent intent = new Intent(context, HomeActivity.class);
@@ -271,9 +274,9 @@ public class TgaSdk {
                                 }
 
                                 if (schemeQuery!=null&&!schemeQuery.equals("")){
-                                    url= TgaSdk.gameCentreUrl+ "?"+txnid+"&theme="+theme1+"&"+schemeQuery+"&navigationbar="+navigationbar+"&appId="+ TgaSdk.appId+"&nickname="+bipName+msisid+"&token="+bipToken+"&refresh-token="+reBipToken+"&appversion="+version+"&avatar="+bipHeader;//无底部
+                                    url= TgaSdk.gameCentreUrl+ "?"+txnid+"&theme="+theme2+"&"+schemeQuery+"&navigationbar="+navigationbar+"&appId="+ TgaSdk.appId+"&nickname="+bipName+msisid+"&token="+bipToken+"&refresh-token="+reBipToken+"&appversion="+version+"&avatar="+bipHeader;//无底部
                                 }else {
-                                    url= TgaSdk.gameCentreUrl+ "?"+txnid+"&theme="+theme1+"&appId="+ TgaSdk.appId+"&navigationbar="+navigationbar+"&nickname="+bipName+"&token="+bipToken+"&refresh-token="+reBipToken+msisid+"&appversion="+version+"&avatar="+bipHeader;//无底部
+                                    url= TgaSdk.gameCentreUrl+ "?"+txnid+"&theme="+theme2+"&appId="+ TgaSdk.appId+"&navigationbar="+navigationbar+"&nickname="+bipName+"&token="+bipToken+"&refresh-token="+reBipToken+msisid+"&appversion="+version+"&avatar="+bipHeader;//无底部
                                 }
                                 theme1="#"+theme1;
                                 Intent intent = new Intent(context, HomeActivity.class);

@@ -4,7 +4,7 @@ buildscript {
         google()
         mavenCentral()
         jcenter()
-//        maven { url'https://applovin.bintray.com/Quality-Service' }
+//        maven { url'https://applovin.bintray.com/Quality-Service'}
         maven { url 'https://artifacts.applovin.com/android' }
     }
     dependencies {
