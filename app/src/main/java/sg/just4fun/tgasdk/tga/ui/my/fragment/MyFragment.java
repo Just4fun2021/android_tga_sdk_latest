@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -99,8 +99,8 @@ if ( TgaSdk.listener!=null){
     }
 
     private void upWebview(String lang) {
-        Glide.with(getActivity()).load(R.mipmap.gif)
-                .into(img_loading);
+//        Glide.with(getActivity()).load(R.mipmap.gif)
+//                .into(img_loading);
         initWebView();
         rl_loading.setVisibility(View.VISIBLE);
         String  userInfo = TgaSdk.listener.getAuthCode();

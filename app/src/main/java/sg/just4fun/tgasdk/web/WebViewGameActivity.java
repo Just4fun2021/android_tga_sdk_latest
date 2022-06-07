@@ -31,7 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.h5.H5AdsWebViewClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,6 +47,8 @@ import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 import sg.just4fun.tgasdk.R;
 import sg.just4fun.tgasdk.adsdk.TgaAdSdkUtils;
 import sg.just4fun.tgasdk.callback.TGACallback;
@@ -74,7 +76,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
    private int isFrist=0;
     private LollipopFixedWebView newWebView;
     private String lang1;
-    private ImageView img_loading;
+    private GifImageView img_loading;
     public static RelativeLayout rl_loading;
     private int change;
     private FacebookTpBean facebook;
@@ -108,6 +110,9 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         NotchScreenManager.getInstance().setDisplayInNotch(WebViewGameActivity.this);
         SdkActivityDele.addActivity(WebViewGameActivity.this);
         img_loading = findViewById(R.id.img_loading);
+
+
+
         rl_loading = findViewById(R.id.rl_loading);
         relayout_web = findViewById(R.id.relayout_web);
 
@@ -269,8 +274,8 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
         FacebookTpBean.callbackManager.onActivityResult(requestCode, resultCode, data);
     }
     private void upWebview(int pag,String lang, WebView webView) {
-        Glide.with(WebViewGameActivity.this).load(R.mipmap.gif)
-                .into(img_loading);
+//        Glide.with(WebViewGameActivity.this).load(R.mipmap.gif)
+//                .into(img_loading);
         rl_loading.setVisibility(View.VISIBLE);
         if(TgaSdk.listener!=null){
 //            new Thread(new Runnable() {

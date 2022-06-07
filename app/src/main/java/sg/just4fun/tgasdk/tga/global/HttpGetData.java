@@ -1,4 +1,4 @@
-package sg.just4fun.tgasdk.tga.global;
+ package sg.just4fun.tgasdk.tga.global;
 
 import android.content.Context;
 import android.content.Intent;
@@ -367,6 +367,9 @@ public class HttpGetData {
                     }
                 });
     }
+
+
+
 
 //    获取fight对战创建ticket
     public static void getFightTicket(Context context, String token,String reToken, String appid, String matchMode, String lang) {

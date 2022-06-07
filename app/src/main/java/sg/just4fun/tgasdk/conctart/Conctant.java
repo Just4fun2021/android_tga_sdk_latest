@@ -159,7 +159,7 @@ public class Conctant {
         }else if(appcode.equals("khalaspay")){
             return "12172a";
         }else {
-            return "FA9C2A";
+            return "23D3BE";
         }
     }
 

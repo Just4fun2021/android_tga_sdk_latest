@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,7 +29,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.h5.H5AdsWebViewClient;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -46,6 +45,7 @@ import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import pl.droidsonroids.gif.GifImageView;
 import sg.just4fun.tgasdk.R;
 import sg.just4fun.tgasdk.adsdk.TgaAdSdkUtils;
 import sg.just4fun.tgasdk.callback.TGACallback;
@@ -56,7 +56,6 @@ import sg.just4fun.tgasdk.modle.BipGameUserUser;
 import sg.just4fun.tgasdk.tga.base.HttpBaseResult;
 import sg.just4fun.tgasdk.tga.base.JsonCallback;
 import sg.just4fun.tgasdk.tga.global.AppUrl;
-import sg.just4fun.tgasdk.tga.ui.home.model.TgaSdkUserInFo;
 import sg.just4fun.tgasdk.tga.utils.SpUtils;
 import sg.just4fun.tgasdk.tpsdk.facebook.FacebookTpBean;
 import sg.just4fun.tgasdk.web.Conctart;
@@ -69,13 +68,13 @@ import sg.just4fun.tgasdk.web.pay.GoogleBillingUtil;
 import sg.just4fun.tgasdk.web.share.ShareUtils;
 
 public class HomeActivity extends AppCompatActivity implements TGACallback.ShareCallback , TGACallback.CodeCallback, TGACallback.OutLoginCallback{
-    private static String TGA = "WebViewGameActivity";
+    private static String TGA = "HomeActivity";
     public static LollipopFixedWebView add_view;
     private String youxiUrl;
     private int isFrist = 0;
     private LollipopFixedWebView newWebView;
     private String lang1;
-    private ImageView img_loading;
+    private GifImageView img_loading;
     public static RelativeLayout rl_loading;
     private int change;
     private FacebookTpBean facebook;
@@ -108,7 +107,15 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         setContentView(R.layout.activity_web_view_game);
         NotchScreenManager.getInstance().setDisplayInNotch(HomeActivity.this);
         SdkActivityDele.addActivity(HomeActivity.this);
+
+
+
         img_loading = findViewById(R.id.img_loading);
+//        img_loading.setImageResource(R.mipmap.gif);
+
+
+
+
         rl_loading = findViewById(R.id.rl_loading);
         add_view = findViewById(R.id.add_view1);
         image_black = findViewById(R.id.image_black);
@@ -189,6 +196,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
             }
         }
 
+
     }
 
     /**
@@ -246,10 +254,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-
-
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -258,8 +263,8 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void upWebview(String url,int pag, String lang, WebView webView) {
-        Glide.with(HomeActivity.this).load(R.mipmap.gif)
-                .into(img_loading);
+//        Glide.with(HomeActivity.this).load(R.mipmap.gif)
+//                .into(img_loading);
         rl_loading.setVisibility(View.VISIBLE);
         if (TgaSdk.listener != null) {
                             String info = TgaSdk.listener.getAuthCode();
@@ -284,6 +289,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                     super.onPageStarted(view, url, favicon);
+                    rl_loading.setVisibility(View.GONE);
                 }
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -299,9 +305,6 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                         }
                         Uri shareUri = Uri.parse("http://www.test.com?" + shareParam);
                     /*
-                    Log.d("TGA_URL", shareUri.toString());
-                    Log.d("=share=", "=title==" + shareUri.getQueryParameter("title"));
-                    Log.d("=share=", "=url==" + shareUri.getQueryParameter("url"));
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_TEXT, shareUri.getQueryParameter("title") + " " + shareUri.getQueryParameter("url"));
@@ -320,7 +323,7 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
                 @Override
                 public void onPageFinished(WebView webView, String url) {
                     super.onPageFinished(webView, url);
-                    rl_loading.setVisibility(View.GONE);
+
                     Log.e("地址", "加载h5页面结束" + url + ", webview.orgurl=" + webView.getOriginalUrl() +", webview.url = " + webView.getUrl());
                 }
 /*@Override
@@ -367,7 +370,6 @@ public class HomeActivity extends AppCompatActivity implements TGACallback.Share
         webSetting.setAppCachePath(getDir("appcache", 0).getPath());
         webSetting.setDatabasePath(getDir("databases", 0).getPath());
         webSetting.setGeolocationDatabasePath(getDir("geolocation", 0).getPath());
-//        webSetting.en
         webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
         // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
         webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);

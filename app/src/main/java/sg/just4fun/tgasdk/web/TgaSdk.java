@@ -106,7 +106,6 @@ public class TgaSdk {
     public static void init(Context context,String env,String appKey,String schemeUrl,String appPaymentKey,TGACallback.TgaEventListener listener,TGACallback.initCallback initCallback) {
         TgaSdk.env=env;
         mContext = context.getApplicationContext();
-//        String metaDataStringApplication = Conctart.getMetaDataStringApplication((Activity) mContext, "com.google.android.gms.ads.APPLICATION_ID", "");
 //       if(!metaDataStringApplication.equals("")){
         MobileAds.initialize(mContext);
 //       }
@@ -128,7 +127,6 @@ public class TgaSdk {
 //        });
 //       获取用户配置表
         getUserInfo(appKey);
-
 
     }
     public static void initCodeTokenInfo(String pkName, UserInFoBean resultInfo, Gson gson, int p, int p2) {
@@ -193,6 +191,10 @@ public class TgaSdk {
             bipToken = jsonObject.getString("accessToken");
             rebipToken = jsonObject.getString("refreshToken");
             bipUserid= user.getInt("id");
+
+
+
+
             SpUtils.putString(mContext,"bipToken", bipToken);
             SpUtils.putInt(mContext,"bipUserId",bipUserid);
             SpUtils.putString(mContext,"reBipToken",rebipToken);
@@ -209,7 +211,6 @@ public class TgaSdk {
         }
 
     }
-
     public static Context getContext() {
         return mContext;
     }
@@ -235,6 +236,7 @@ public class TgaSdk {
                 String bipTxnId = SpUtils.getString(mContext, "bipTxnId", "");
                 String bipToken = SpUtils.getString(mContext, "bipToken", "");
                 String reBipToken = SpUtils.getString(mContext, "reBipToken", "");
+
                 if (url==null||url.equals("")){
                     String version = Conctant.getVersion(mContext);
                     if (isSuccess==1){
@@ -473,6 +475,8 @@ public class TgaSdk {
             }
         });
     }
+
+
    public static void goPageByScheme(Uri schemeUri,boolean navigationbar){
         if (schemeUri!=null||!schemeUri.equals("")){
             try{
