@@ -314,6 +314,7 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                                     super.onPageStarted(view, url, favicon);
                                     rl_loading.setVisibility(View.GONE);
+                                    img_loading.setVisibility(View.GONE);
                                     Log.e(TGA,"WebView"+view+"  url="+url+" Bitma="+favicon);
                                 }
                                 @Override
@@ -326,6 +327,8 @@ public class WebViewGameActivity extends AppCompatActivity implements TGACallbac
                                 @Override
                                 public void onPageFinished(WebView webView, String url) {
                                     super.onPageFinished(webView, url);
+                                    rl_loading.setVisibility(View.GONE);
+                                    img_loading.setVisibility(View.GONE);
                                     Log.e("执行","onPageFinished="+url);
                                     Log.e(TGA,"WebView"+webView+"  url="+url);
                                 }
