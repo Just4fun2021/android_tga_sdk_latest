@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "F:\\android_jitpack_tga_sdk_latest\\app\\build\\intermediates\\res\\merged\\release\\layout-v23\\exo_styled_player_control_ffwd_button.xml",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-2\\files-2.1\\b8f38ec67c63948ec2d3cc2df45977e3\\exoplayer-ui-2.15.1\\res\\layout-v23\\exo_styled_player_control_ffwd_button.xml"
+    },
+    {
+        "merged": "F:\\android_jitpack_tga_sdk_latest\\app\\build\\intermediates\\res\\merged\\release\\layout-v23\\exo_styled_player_control_rewind_button.xml",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-2\\files-2.1\\b8f38ec67c63948ec2d3cc2df45977e3\\exoplayer-ui-2.15.1\\res\\layout-v23\\exo_styled_player_control_rewind_button.xml"
+    }
+]
