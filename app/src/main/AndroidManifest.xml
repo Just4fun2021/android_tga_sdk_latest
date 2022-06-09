@@ -17,7 +17,6 @@
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".tga.ui.im.SdkImActivity"></activity>
         <activity
             android:name=".tga.ui.home.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

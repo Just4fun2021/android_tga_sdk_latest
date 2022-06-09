@@ -23,7 +23,6 @@
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true" >
-        <activity android:name="sg.just4fun.tgasdk.tga.ui.im.SdkImActivity" />
         <activity
             android:name="sg.just4fun.tgasdk.tga.ui.home.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
