@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
@@ -332,20 +333,33 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
 
     @JavascriptInterface
     public void showVungleAd(String uuid, String adType) {
-        vungle.showAd(uuid, adType);
+        vungle.showAd(uuid, adType, "");
     }
 
     @JavascriptInterface
-    public void showApplovinAd(String uuid, String adType) {
-        Log.e("apploving初始化","showApplovinAd");
-        Log.d(apploving.getTag(), "showApplovingAd(" + uuid + "," + adType + ")");
-        Log.d("eZx4Pox", "showApplovingAd(" + uuid + "," + adType + ")");
-        if(!metaDataStringApplication1.equals("")){
-            Log.e("apploving初始化","metaDataStringApplication1");
-            if (TgaSdk.applovnIdConfig!=null){
-                apploving.showAd(uuid, adType);
-                Log.e("apploving初始化","TgaSdk.applovnIdConfig");
-            }
+    public void showApplovinAd(String uuid, String option) {
+//        Log.e("apploving初始化","showApplovinAd");
+//        Log.d(apploving.getTag(), "showApplovingAd(" + uuid + "," + adType + ")");
+//        Log.d("eZx4Pox", "showApplovingAd(" + uuid + "," + adType + ")");
+//        if(!metaDataStringApplication1.equals("")){
+//            Log.e("apploving初始化","metaDataStringApplication1");
+//            if (TgaSdk.applovnIdConfig!=null){
+//                apploving.showAd(uuid, adType);
+//                Log.e("apploving初始化","TgaSdk.applovnIdConfig");
+//            }
+//        }
+        if (!metaDataStringApplication1.equals("") && !TextUtils.isEmpty(option))
+        {
+            try
+            {
+                JSONObject json = new JSONObject(option);
+                Log.e("apploving初始化", "metaDataStringApplication1");
+                if (TgaSdk.applovnIdConfig != null)
+                {
+                    apploving.showAd(uuid, json.getString("adType"), json.getString("name"));
+                    Log.e("apploving初始化", "TgaSdk.applovnIdConfig");
+                }
+            }catch (Exception e){}
         }
 
     }
@@ -372,14 +386,14 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     }
 
     @JavascriptInterface
-    public void showApplovinBannerAd(String uuid, String params) {
+    public void showApplovinBannerAd(String uuid, String params, String placement) {
         Log.e("apploving初始化","showApplovinBannerAd");
         Log.d(apploving.getTag(), "showApplovinBannerAd(" + uuid + "," + params + ")");
 //        Log.d("eZx4Pox", "showApplovinBannerAd(" + uuid + "," + params + ")");
 //        apploving.showBannerAd(uuid, "banner", params);
         if(!metaDataStringApplication1.equals("")){
             if (TgaSdk.applovnIdConfig!=null){
-                apploving.showAd(uuid, "banner");
+                apploving.showAd(uuid, "banner", placement);
             }
         }
     }
@@ -613,7 +627,7 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
     }
 
     public void test() {
-        this.apploving.showAd(UUID.randomUUID().toString().replace("-",""), "fullscreen");
+//        this.apploving.showAd(UUID.randomUUID().toString().replace("-",""), "fullscreen");
     }
 
     @JavascriptInterface
@@ -896,6 +910,40 @@ public class JavaScriptinterface implements PurchasesUpdatedListener{
         return str;
     }
 
+    @JavascriptInterface
+    public void getUserParam(String uuid, String options)
+    {
+        String retStr = "";
+        JSONObject param = TgaSdk.urlParam.get("user");
+        if (param != null)
+        {
+            retStr = param.toString();
+        }
+        try
+        {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("uuid", uuid);
+            jsonObject.put("data", retStr);
+            webview.post(new AdConfigUtlis.ScriptCodeRunnable(AdConfigUtlis.toJavaScriptCode("null", jsonObject.toString()), webview));
+        }catch (Exception e) {e.printStackTrace();}
+    }
 
+    @JavascriptInterface
+    public void getAppParam(String uuid, String options)
+    {
+        String retStr = "";
+        JSONObject param = TgaSdk.urlParam.get("app");
+        if (param != null)
+        {
+            retStr = param.toString();
+        }
+        try
+        {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("uuid", uuid);
+            jsonObject.put("data", retStr);
+            webview.post(new AdConfigUtlis.ScriptCodeRunnable(AdConfigUtlis.toJavaScriptCode("null", jsonObject.toString()), webview));
+        }catch (Exception e) {e.printStackTrace();}
+    }
 
 }

@@ -180,8 +180,8 @@ if ( TgaSdk.listener!=null){
             }*/
         });
 
-        MyJavaScripface tgaBridge = new MyJavaScripface(getActivity(), TGA_URL);
-        tgaBridge.init(add_view); //初始化所有需要BRIDGE的SDK
+//        MyJavaScripface tgaBridge = new MyJavaScripface(getActivity(), TGA_URL);
+//        tgaBridge.init(add_view); //初始化所有需要BRIDGE的SDK
         TGACallback.setShareCallback(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             add_view.setWebContentsDebuggingEnabled(true);
